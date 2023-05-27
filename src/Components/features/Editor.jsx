@@ -3,14 +3,15 @@ import { useRef } from "react";
 // Toast 에디터
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/react-editor";
-import 'prismjs/themes/prism.css';
-import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js';
+import "prismjs/themes/prism.css";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
 
-import 'tui-color-picker/dist/tui-color-picker.css';
-import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
+import "tui-color-picker/dist/tui-color-picker.css";
+import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+import styled from "styled-components";
 
 export default function ToastEditor() {
   return (
@@ -31,6 +32,26 @@ export default function ToastEditor() {
         ]}
         plugins={[codeSyntaxHighlight, colorSyntax]}
       />
+      <StBtnBox>
+        <StBtnSubmit>저장</StBtnSubmit>
+        <StBtnCancel>뒤로가기</StBtnCancel>
+      </StBtnBox>
     </div>
   );
 }
+
+const StBtnBox = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: end;
+`
+
+const StBtnSubmit = styled.button`
+margin-right: 30px;
+`
+
+const StBtnCancel = styled(StBtnSubmit)`
+  margin-right: 15px;
+`
