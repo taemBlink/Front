@@ -118,7 +118,10 @@ function Signup() {
   };
   return (
     <StSignupContainer>
-      <h1>회원가입</h1>
+      <Title>
+        <h1>회원가입</h1>
+        <div>일반회원</div>
+      </Title>
       <label>
         이름 :
         <StAlertBox>{korName.err ? alertMessage.nameErr : null}</StAlertBox>
@@ -160,6 +163,15 @@ function Signup() {
   );
 }
 export default Signup;
+
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+`;
+
 const StSignupContainer = styled.div`
   max-width: 1200px;
   margin: 15px auto;
@@ -169,6 +181,10 @@ const StSignupContainer = styled.div`
   gap: 10px;
   flex-direction: column;
   border: 3px solid black;
+  /* Modal styles */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
 `;
 const StBtn = styled.button`
   margin: 10px;
