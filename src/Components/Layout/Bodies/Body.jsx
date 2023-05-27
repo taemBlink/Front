@@ -1,29 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-function Body({ children }) {
-  return <div>{children}</div>;
-}
+function Body() {
+  const [posts, setPosts] = useState([]);
 
-function PostList() {
-  const posts = [
-    { id: 1, title: "첫 번째 글", content: "첫 번째 글 내용" },
-    { id: 2, title: "두 번째 글", content: "두 번째 글 내용" },
-    { id: 3, title: "세 번째 글", content: "세 번째 글 내용" },
-  ];
+  useEffect(() => {
+    // 백엔드에서 글목록 데이터를 가져오는 비동기 함수 호출
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch("백엔드 API URL");
+      const data = await response.json();
+      setPosts(data); // 가져온 데이터를 상태에 저장
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
 
   return (
-    <Body>
-      <h1>글 목록</h1>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-          </li>
-        ))}
-      </ul>
-    </Body>
+    <div>
+      <h1>글목록</h1>
+      {posts.map((post) => (
+        <div key={post.id}>
+          <h2>{post.title}</h2>
+          <p>{post.content}</p>
+        </div>
+      ))}
+    </div>
   );
 }
 
-export default PostList;
+export default Body;
