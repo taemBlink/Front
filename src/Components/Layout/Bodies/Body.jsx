@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Body() {
+function Body({children}) {
   return (
-    <div>Body</div>
+    <div>{children}</div>
   )
 }
 

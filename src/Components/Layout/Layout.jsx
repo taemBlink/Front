@@ -4,16 +4,17 @@ import Blinkhub from "./Blinkhub/Blinkhub";
 import Body from "./Bodies/Body";
 import Footer from "./Footers/Footer";
 import Navibar from "./Navigationbar/Navibar";
+
 function Layout({ children }) {
   return (
     <StLayoutBox>
-      <main>
-        <Blinkhub />
+      <Blinkhub />
+      <StMain>
         <Header />
         <Navibar />
         <Body className="content">{children}</Body>
         <Footer />
-      </main>
+      </StMain>
     </StLayoutBox>
   );
 }
@@ -24,3 +25,7 @@ const StLayoutBox = styled.div`
   min-width: 800px;
   margin: 0 auto;
 `;
+
+const StMain = styled.main`
+  margin-top: 40px;
+`
