@@ -1,5 +1,5 @@
 import React from "react";
-import ToastEditor from "../Components/features/Editor";
+import ToastEditor from "../Components/features/Editor/Editor";
 import Layout from "../Components/Layout/Layout";
 
 function Posting() {
