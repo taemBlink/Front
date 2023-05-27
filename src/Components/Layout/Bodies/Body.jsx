@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 function Body() {
   const [posts, setPosts] = useState([]);
@@ -20,11 +21,11 @@ function Body() {
 
   return (
     <div>
-      <h1>글목록</h1>
       {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.title}</h2>
           <p>{post.content}</p>
+          <StImgBox imageUrl={post.imageURL}></StImgBox>
         </div>
       ))}
     </div>
@@ -32,3 +33,10 @@ function Body() {
 }
 
 export default Body;
+const StImgBox = styled.div`
+  background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 80%;
+`;
