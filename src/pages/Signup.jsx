@@ -62,13 +62,13 @@ function SignUp({ isOpen, closeModal }) {
             />
           </div>
           <div>
-            <label>닉네임</label>
+            <label>이름</label>
             <br />
             <input
               name="nickName"
               onChange={setUserInfo}
               value={userInfo.nickName}
-              placeholder="두 글자 이상 닉네임"
+              placeholder="이름을 입력해주세요"
             ></input>
           </div>
           <div>
