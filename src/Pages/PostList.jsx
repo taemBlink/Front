@@ -1,42 +1,72 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
 
-function PostList() {
-  const [posts, setPosts] = useState([]);
+function App() {
+  const [postList, setPostList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 백엔드에서 글목록 데이터를 가져오는 비동기 함수 호출
-    fetchPosts();
+    const fetchPostList = async () => {
+      try {
+        const response = await axios.get("http://example.com/api/posts"); // 백엔드 API의 주소로 변경해야 합니다.
+        setPostList(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching post list:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchPostList();
   }, []);
 
-  const fetchPosts = async () => {
-    try {
-      const response = await fetch("백엔드 API URL");
-      const data = await response.json();
-      setPosts(data); // 가져온 데이터를 상태에 저장
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    }
-  };
-
   return (
-    <div>
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h2>{post.title}</h2>
-          <p>{post.content}</p>
-          <StImgBox imageUrl={post.imageURL}></StImgBox>
-        </div>
-      ))}
-    </div>
+    <Container>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          {postList.map((post, index) => (
+            <RepeatedDiv key={post.id}>
+              <Row>
+                <h2>{post.title}</h2>
+                <StImgBox imageUrl={post.imageURL}></StImgBox>
+              </Row>
+            </RepeatedDiv>
+          ))}
+        </>
+      )}
+    </Container>
   );
 }
 
-export default PostList;
+export default App;
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  height: 100vh;
+`;
+
+const RepeatedDiv = styled.div`
+  flex: 1;
+  width: 50%;
+
+  &:nth-child(2n) {
+    /* 두 번째 열 스타일 */
+  }
+`;
 const StImgBox = styled.div`
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
   width: 100%;
   height: 80%;
+`;
+const Row = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 `;
