@@ -21,7 +21,7 @@ const parseJwt = (token) => {
 
 function SignIn() {
   const navigate = useNavigate();
-  const [nickName, setNickName] = useState({
+  const [korName, setkorName] = useState({
     value: "",
     err: null,
   });
@@ -30,11 +30,11 @@ function SignIn() {
     err: null,
   });
 
-  const onNickNameChangeHandler = (event) => {
-    const inputNickName = event.target.value;
-    setNickName((prevNickName) => ({
-      ...prevNickName,
-      value: inputNickName,
+  const onkorNameChangeHandler = (event) => {
+    const inputkorName = event.target.value;
+    setkorName((prevkorName) => ({
+      ...prevkorName,
+      value: inputkorName,
     }));
   };
 
@@ -48,10 +48,10 @@ function SignIn() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (nickName.value && password.value) {
+    if (korName.value && password.value) {
       try {
         const res = await AuthApi.signin({
-          nickname: nickName.value,
+          korname: korName.value,
           password: password.value,
         });
 
@@ -64,8 +64,8 @@ function SignIn() {
 
         // 세선 스토리지에 닉네임 저장
         sessionStorage.setItem(
-          "nickname",
-          JSON.stringify(parseJwt(res.data.token).nickname)
+          "korname",
+          JSON.stringify(parseJwt(res.data.token).korname)
         );
         sessionStorage.setItem("isSignIn", JSON.stringify(true));
         alert("로그인에 성공했습니다.");
@@ -77,7 +77,7 @@ function SignIn() {
       // axios
       //     .post(
       //       "http://miniproject.ap-northeast-2.elasticbeanstalk.com/signin", // 미리 약속한 주소
-      //       { nickname:nickName.value, password:password.value }, // 서버가 필요로 하는 데이터를 넘겨주고,
+      //       { korname:korName.value, password:password.value }, // 서버가 필요로 하는 데이터를 넘겨주고,
       //       { headers: {} } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
       //     )
       //     .then(function (response) {
@@ -94,12 +94,12 @@ function SignIn() {
   return (
     <StContiner onSubmit={onSubmitHandler}>
       <h1>로그인</h1>
-      <label>Nickname</label>
+      <label>korname</label>
       <input
         type="text"
-        value={nickName.value}
-        placeholder="Type your Nickname"
-        onChange={onNickNameChangeHandler}
+        value={korName.value}
+        placeholder="Type your korname"
+        onChange={onkorNameChangeHandler}
       />
       <label>비밀번호</label>
       <input

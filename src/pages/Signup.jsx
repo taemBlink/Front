@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthApi } from "../shared/Api";
 
+// 이메일 정규식
+const emailRegex =
+  /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+
 // 이름 정규식
 const kornameRegex = /^[가-힣]{2,4}$/;
 // 한글 이름 2~4자 이내
@@ -21,6 +25,10 @@ const alertMessage = {
 
 function Signup() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState({
+    value: "",
+    err: null,
+  });
   const [korName, setkorName] = useState({
     value: "",
     err: null,
@@ -33,6 +41,15 @@ function Signup() {
     value: "",
     err: null,
   });
+
+  const onEmailChangeHandler = (event) => {
+    const inputEmail = event.target.value;
+    setkorName((prevEmail) => ({
+      ...prevEmail,
+      value: inputEmail,
+    }));
+  };
+
   const onkorNameChangeHandler = (event) => {
     const inputkorName = event.target.value;
     setkorName((prevkorName) => ({
@@ -59,9 +76,15 @@ function Signup() {
 
   const verifySiginUpData = () => {
     // 유효성 검사 결과 저장
+    const verifiedEmail = emailRegex.test(korName.value);
     const verifiedkorname = kornameRegex.test(korName.value);
     const verifiedPassword = passwordRegex.test(password.value);
     const verifiedConfirmPassword = password.value === confirmPassword.value;
+
+    setEmail((prevEmail) => ({
+      ...prevEmail,
+      err: !verifiedEmail,
+    }));
 
     setkorName((prevkorName) => ({
       ...prevkorName,
@@ -88,7 +111,7 @@ function Signup() {
 
       try {
         const res = await AuthApi.signup({
-          korname: korName.value,
+          email: email.value,
           password: password.value,
         });
         alert(res.data.message);
@@ -122,6 +145,15 @@ function Signup() {
         <h1>회원가입</h1>
         <div>일반회원</div>
       </Title>
+      <label>
+        이메일 :
+        <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
+      </label>
+      <input
+        type="text"
+        placeholder="My name"
+        onChange={onEmailChangeHandler}
+      />
       <label>
         이름 :
         <StAlertBox>{korName.err ? alertMessage.nameErr : null}</StAlertBox>
