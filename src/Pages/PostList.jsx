@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-function Body({ children }) {
+function PostList() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Body({ children }) {
   };
 
   return (
-    <div className="content">
+    <div>
       {posts.map((post) => (
         <div key={post.id}>
           <h2>{post.title}</h2>
@@ -28,12 +28,11 @@ function Body({ children }) {
           <StImgBox imageUrl={post.imageURL}></StImgBox>
         </div>
       ))}
-      {children}
     </div>
   );
 }
 
-export default Body;
+export default PostList;
 const StImgBox = styled.div`
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;

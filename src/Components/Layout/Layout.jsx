@@ -28,4 +28,4 @@ const StLayoutBox = styled.div`
 
 const StMain = styled.main`
   margin-top: 40px;
-`
+`;
