@@ -12,7 +12,7 @@ const passwordRegex = /^.{4,}$/;
 
 // 오류 메세지
 const alertMessage = {
-  nickErr: "닉네임 규칙에 어긋납니다! (영문과 숫자를 사용하여 3글자 이상)",
+  nameErr: "이름 규칙에 어긋납니다! (한글을 사용하여 2글자 이상)",
   pwErr: "비밀번호 규칙에 어긋납니다!!(4글자 이상)",
   pwMachErr: "패스워드가 불일치합니다.",
   signinUpComplete: "회원가입에 성공했습니다.",
@@ -121,7 +121,7 @@ function Signup() {
       <h1>회원가입</h1>
       <label>
         이름 :
-        <StAlertBox>{korName.err ? alertMessage.nickErr : null}</StAlertBox>
+        <StAlertBox>{korName.err ? alertMessage.nameErr : null}</StAlertBox>
       </label>
       <input
         type="text"
