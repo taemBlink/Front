@@ -62,7 +62,7 @@ function SignIn() {
           setCookie
         )}; expires=${expirationDate.toUTCString()}; path=/`;
 
-        // 세선 스토리지에 닉네임 저장
+        // 세선 스토리지에 이메일 저장
         sessionStorage.setItem(
           "email",
           JSON.stringify(parseJwt(res.data.token).email)

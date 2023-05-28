@@ -1,9 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Sidebar from "./Sidebar";
 
-function Detailpage() {
+function Detail() {
+  const { postId } = useParams();
+  const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(
+          `http://example.com/api/posts/${postId}`
+        ); // Replace with the appropriate API endpoint to fetch a single post
+        setPost(response.data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [postId]);
+
   return (
-    <div>Detailpage</div>
-  )
+    <div className="detail-container">
+      <div className="content">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : post ? (
+          <div>
+            <h2>{post.title}</h2>
+            <img src={post.imageURL} alt={post.title} />
+            <p>{post.content}</p>
+          </div>
+        ) : (
+          <p>Post not found</p>
+        )}
+      </div>
+      <Sidebar postId={postId} />
+    </div>
+  );
 }
 
-export default Detailpage
+export default Detail;
