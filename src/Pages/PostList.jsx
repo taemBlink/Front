@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-function App() {
+function PostList() {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPostList = async () => {
@@ -21,6 +23,10 @@ function App() {
     fetchPostList();
   }, []);
 
+  const handlePostClick = (postId) => {
+    navigate(`/detail/${postId}`); // 상세 페이지로 이동하도록 경로를 지정합니다.
+  };
+
   return (
     <Container>
       {isLoading ? (
@@ -30,7 +36,7 @@ function App() {
           {postList.map((post, index) => (
             <RepeatedDiv key={post.id}>
               <Row>
-                <h2>{post.title}</h2>
+                <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
                 <StImgBox imageUrl={post.imageURL}></StImgBox>
               </Row>
             </RepeatedDiv>
@@ -41,7 +47,7 @@ function App() {
   );
 }
 
-export default App;
+export default PostList;
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;

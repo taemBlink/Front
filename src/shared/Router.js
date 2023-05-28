@@ -3,6 +3,8 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../Pages/Home";
 import Posting from "../Pages/Posting";
+import PostList from "./PostList";
+import DetailPage from "./DetailPage";
 
 // 2. Router 라는 함수를 만들고 아래와 같이 작성합니다.
 //BrowserRouter를 Router로 감싸는 이유는,
@@ -13,6 +15,8 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="posting" element={<Posting />} />
+        <Route path="/" element={<PostList />} />
+        <Route path="/detail/:postId" element={<DetailPage />} />
       </Routes>
     </BrowserRouter>
   );
