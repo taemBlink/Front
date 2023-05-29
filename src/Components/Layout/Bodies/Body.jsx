@@ -1,7 +1,7 @@
 import React from "react";
 
 function Body({ children }) {
-  return <div>{children}</div>;
+  return <div className="content">{children}</div>;
 }
 
 export default Body;

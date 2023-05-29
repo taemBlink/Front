@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "./Sidebar";
 
-function Detail() {
+function Detailpage() {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,4 +45,4 @@ function Detail() {
   );
 }
 
-export default Detail;
+export default Detailpage;
