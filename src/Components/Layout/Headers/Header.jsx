@@ -6,9 +6,12 @@ function Header() {
   return (
     <StHeader>
       <StSpaceDiv>
-        <StLogoBtn>Blink</StLogoBtn>
-        <StMainBtn>홈</StMainBtn>
-        <StMainBtn>기업 리뷰(미구현)</StMainBtn>
+      <Link to={"/"}>
+        <StLogoBtn>Blink Logo</StLogoBtn>
+        </Link>
+        <Link to={"/"}>
+          <StMainBtn>홈</StMainBtn>
+        </Link>
         <StMainBtn>채용 공고</StMainBtn>
       </StSpaceDiv>
       <div>
@@ -38,7 +41,7 @@ const StHeader = styled.div`
 `;
 
 const StSpaceDiv = styled.div`
-  width: 400px;
+  width: 300px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -89,4 +92,12 @@ const StJoinTeamBtn = styled(StMainBtn)`
 `;
 
 const StLogoBtn = styled.button`
-`
+  border: none;
+  box-shadow: none;
+  background-color: white;
+
+  cursor: pointer;
+  &:active {
+    filter: brightness(0.9);
+  }
+`;
