@@ -11,12 +11,16 @@ const emailRegex =
 const kornameRegex = /^[가-힣]{2,4}$/;
 // 한글 이름 2~4자 이내
 
+// 닉네임 정규식
+const nicknameRegex = /^[A-Za-z0-9]{3,}$/;
+
 // 비밀번호 정규식
 const passwordRegex = /^.{4,}$/;
 
 // 오류 메세지
 const alertMessage = {
   nameErr: "이름 규칙에 어긋납니다! (한글을 사용하여 2글자 이상)",
+  nickErr: "닉네임 규칙에 어긋납니다! (영문과 숫자를 사용하여 3글자 이상)",
   pwErr: "비밀번호 규칙에 어긋납니다!!(4글자 이상)",
   pwMachErr: "패스워드가 불일치합니다.",
   signinUpComplete: "회원가입에 성공했습니다.",
@@ -33,6 +37,12 @@ function Signup() {
     value: "",
     err: null,
   });
+
+  const [nickName, setNickName] = useState({
+    value: "",
+    err: null,
+  });
+
   const [password, setPassword] = useState({
     value: "",
     err: null,
@@ -60,6 +70,14 @@ function Signup() {
     }));
   };
 
+  const onNickNameChangeHandler = (event) => {
+    const inputNickName = event.target.value;
+    setNickName((prevNickName) => ({
+      ...prevNickName,
+      value: inputNickName,
+    }));
+  };
+
   const onPasswordChangeHandler = (event) => {
     const inputPassword = event.target.value;
     setPassword((prevPassword) => ({
@@ -80,6 +98,7 @@ function Signup() {
     // 유효성 검사 결과 저장
     const verifiedEmail = emailRegex.test(korName.value);
     const verifiedkorname = kornameRegex.test(korName.value);
+    const verifiedNickname = nicknameRegex.test(nickName.value);
     const verifiedPassword = passwordRegex.test(password.value);
     const verifiedConfirmPassword = password.value === confirmPassword.value;
 
@@ -91,6 +110,11 @@ function Signup() {
     setkorName((prevkorName) => ({
       ...prevkorName,
       err: !verifiedkorname,
+    }));
+
+    setNickName((prevNickName) => ({
+      ...prevNickName,
+      err: !verifiedNickname,
     }));
     // 비밀번호 유효성 검사
     setPassword((prevPassword) => ({
@@ -156,10 +180,15 @@ function Signup() {
         이메일 :
         <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
       </label>
+      <input type="text" placeholder="e-mail" onChange={onEmailChangeHandler} />
+      <label>
+        닉네임 :
+        <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
+      </label>
       <input
         type="text"
-        placeholder="My name"
-        onChange={onEmailChangeHandler}
+        placeholder="My Nickname"
+        onChange={onNickNameChangeHandler}
       />
       <label>
         이름 :
@@ -202,14 +231,6 @@ function Signup() {
   );
 }
 export default Signup;
-
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-`;
 
 const StSignupContainer = styled.div`
   max-width: 1200px;
