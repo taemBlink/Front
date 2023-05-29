@@ -39,12 +39,12 @@ function Header() {
       <div>
         <button>팀 블링크 채용</button>
       </div>
+      <Link to={"/posting"}>
+        <StBtnPosting>글쓰기</StBtnPosting>
+      </Link>
       <div>
         {isLoggedIn ? (
           <>
-            <Link to={"/posting"}>
-              <StBtnPosting>글쓰기</StBtnPosting>
-            </Link>
             <button>마이페이지</button>
             <button onClick={handleLogoutClick}>로그아웃</button>
           </>
