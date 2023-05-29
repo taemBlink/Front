@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Signin from "../../../Pages/Signin";
-import Modal from "react-modal"; // Import the modal component from a library
+import Modal from "react-modal";
 
-Modal.setAppElement("#root"); // Set the root element for the modal
+Modal.setAppElement("#root");
 
 function Header() {
   const [showModal, setShowModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLoginClick = () => {
     setShowModal(true);
+  };
+
+  const handleLogoutClick = () => {
+    setIsLoggedIn(false);
   };
 
   const closeModal = () => {
@@ -29,9 +34,15 @@ function Header() {
         <button>팀 블링크 채용</button>
       </div>
       <div>
-        <button>글쓰기</button>
-        <button onClick={handleLoginClick}>로그인</button>{" "}
-        {/* Handle login button click */}
+        {isLoggedIn ? (
+          <>
+            <button>글쓰기</button>
+            <button>마이페이지</button>
+            <button onClick={handleLogoutClick}>로그아웃</button>
+          </>
+        ) : (
+          <button onClick={handleLoginClick}>로그인</button>
+        )}
       </div>
 
       <Modal
@@ -39,8 +50,8 @@ function Header() {
         onRequestClose={closeModal}
         contentLabel="Login Modal"
       >
-        <button onClick={closeModal}>닫기</button> {/* Close modal button */}
-        <Signin /> {/* Render the Signin component inside the modal */}
+        <button onClick={closeModal}>닫기</button>
+        <Signin handleLoginSuccess={() => setIsLoggedIn(true)} />
       </Modal>
     </StHeader>
   );
