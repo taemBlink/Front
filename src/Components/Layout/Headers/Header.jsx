@@ -44,7 +44,7 @@ function Header() {
         {isLoggedIn ? (
           <>
             <button>마이페이지</button>
-            <button onClick={handleLogoutClick}>로그아웃</button>
+            <StBtnSignIn onClick={handleLogoutClick}>로그아웃</StBtnSignIn>
           </>
         ) : (
           <StBtnSignIn onClick={handleLoginClick}>로그인</StBtnSignIn>
