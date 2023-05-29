@@ -22,6 +22,11 @@ function Header() {
     setShowModal(false);
   };
 
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    closeModal(); // 로그인 성공 후 Modal 닫기
+  };
+
   return (
     <StHeader>
       <StSpaceDiv>
@@ -37,10 +42,10 @@ function Header() {
         <StJoinTeamBtn>팀 블링크 채용</StJoinTeamBtn>
       </div>
 
-      <Link to={"/posting"}>
-        <StBtnPosting>글쓰기</StBtnPosting>
-      </Link>
       <div>
+        <Link to={"/posting"}>
+          <StBtnPosting>글쓰기</StBtnPosting>
+        </Link>
         {isLoggedIn ? (
           <>
             <button>마이페이지</button>
@@ -56,8 +61,10 @@ function Header() {
         onRequestClose={closeModal}
         contentLabel="Login Modal"
       >
-        <button onClick={closeModal}>닫기</button>
-        <Signin handleLoginSuccess={() => setIsLoggedIn(true)} />
+        <Signin
+          handleLoginSuccess={handleLoginSuccess}
+          closeModal={closeModal}
+        />
       </Modal>
     </StHeader>
   );

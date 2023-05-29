@@ -22,7 +22,7 @@ const parseJwt = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-function Signin() {
+function Signin({ handleLoginSuccess, closeModal }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
@@ -154,11 +154,10 @@ function Signin() {
             회원가입
           </StBtn>
         </Link>
-        <Link to={"/"}>
-          <StBtn backgroundcolor="#82c8a0" type="button">
-            뒤로가기
-          </StBtn>
-        </Link>
+
+        <StBtn backgroundcolor="#82c8a0" type="button" onClick={closeModal}>
+          닫기
+        </StBtn>
       </div>
     </StContiner>
   );

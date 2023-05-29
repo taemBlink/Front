@@ -42,6 +42,8 @@ function Signup() {
     err: null,
   });
 
+  const [userType, setUserType] = useState("regular"); // Default user type is regular
+
   const onEmailChangeHandler = (event) => {
     const inputEmail = event.target.value;
     setkorName((prevEmail) => ({
@@ -110,30 +112,28 @@ function Signup() {
       // 회원 가입 요청 가능
 
       try {
-        const res = await AuthApi.signup({
-          email: email.value,
-          password: password.value,
-        });
-        alert(res.data.message);
+        if (userType === "regular") {
+          // Regular user signup
+          const res = await AuthApi.signup({
+            email: email.value,
+            password: password.value,
+            userType: "regular", // Explicitly set the user type as 'regular'
+          });
+          alert(res.data.message);
+        } else if (userType === "hr") {
+          // HR manager signup
+          const res = await AuthApi.signup({
+            email: email.value,
+            password: password.value,
+            userType: "hr", // Explicitly set the user type as 'hr'
+          });
+          alert(res.data.message);
+        }
+
         navigate("/");
       } catch (err) {
         alert(err.response.data.errorMessage);
       }
-
-      // axios
-      //   .post(
-      //     serverDomain+"/signup", // 미리 약속한 주소
-      //     { korname:korName.value, password:password.value }, // 서버가 필요로 하는 데이터를 넘겨주고,
-      //     { headers: {} } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
-      //   )
-      //   .then(function (response) {
-      //     console.log(response);
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-
-      return;
     } else {
       // 회원가입 부적합으로 함수 종료
       return;
@@ -142,10 +142,16 @@ function Signup() {
 
   return (
     <StSignupContainer>
-      <Title>
-        <h1>회원가입</h1>
-        <div>일반회원</div>
-      </Title>
+      <h1>회원가입</h1>
+
+      <label>
+        사용자 유형:
+        <select value={userType} onChange={(e) => setUserType(e.target.value)}>
+          <option value="regular">일반회원</option>
+          <option value="hr">인사담당자</option>
+        </select>
+      </label>
+
       <label>
         이메일 :
         <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
