@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
-=======
-import React from "react";
 import { Link } from "react-router-dom";
->>>>>>> main
 import styled from "styled-components";
 import Signin from "../../../Pages/Signin";
 import Modal from "react-modal";
@@ -29,8 +25,8 @@ function Header() {
   return (
     <StHeader>
       <StSpaceDiv>
-      <Link to={"/"}>
-        <StLogoBtn>Blink Logo</StLogoBtn>
+        <Link to={"/"}>
+          <StLogoBtn>Blink Logo</StLogoBtn>
         </Link>
         <Link to={"/"}>
           <StMainBtn>홈</StMainBtn>
@@ -41,26 +37,20 @@ function Header() {
         <StJoinTeamBtn>팀 블링크 채용</StJoinTeamBtn>
       </div>
       <div>
-<<<<<<< HEAD
         <button>팀 블링크 채용</button>
       </div>
       <div>
         {isLoggedIn ? (
           <>
-            <button>글쓰기</button>
+            <Link to={"/posting"}>
+              <StBtnPosting>글쓰기</StBtnPosting>
+            </Link>
             <button>마이페이지</button>
             <button onClick={handleLogoutClick}>로그아웃</button>
           </>
         ) : (
-          <button onClick={handleLoginClick}>로그인</button>
+          <StBtnSignIn onClick={handleLoginClick}>로그인</StBtnSignIn>
         )}
-=======
-        <Link to={"/posting"}>
-          <StBtnPosting>글쓰기</StBtnPosting>
-        </Link>
-
-        <StBtnSignIn>로그인</StBtnSignIn>
->>>>>>> main
       </div>
 
       <Modal
@@ -77,9 +67,6 @@ function Header() {
 
 export default Header;
 
-<<<<<<< HEAD
-const StHeader = styled.div``;
-=======
 const StHeader = styled.div`
   width: 1200px;
   padding: 10px;
@@ -151,4 +138,3 @@ const StLogoBtn = styled.button`
     filter: brightness(0.9);
   }
 `;
->>>>>>> main
