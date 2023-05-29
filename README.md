@@ -14,3 +14,7 @@ react-cookie
 react-router-dom
 
 styled-components
+
+react-kakao-login
+
+react-modal
