@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import Layout from "../Components/Layout/Layout";
 
 function PostList() {
   const [postList, setPostList] = useState([]);
@@ -28,22 +29,24 @@ function PostList() {
   };
 
   return (
-    <Container>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          {postList.map((post, index) => (
-            <RepeatedDiv key={post.id}>
-              <Row>
-                <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
-                <StImgBox imageUrl={post.imageURL}></StImgBox>
-              </Row>
-            </RepeatedDiv>
-          ))}
-        </>
-      )}
-    </Container>
+    <Layout>
+      <Container>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            {postList.map((post, index) => (
+              <RepeatedDiv key={post.id}>
+                <Row>
+                  <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
+                  <StImgBox imageUrl={post.imageURL}></StImgBox>
+                </Row>
+              </RepeatedDiv>
+            ))}
+          </>
+        )}
+      </Container>
+    </Layout>
   );
 }
 
