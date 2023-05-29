@@ -109,7 +109,7 @@ function Signin({ handleLoginSuccess, closeModal }) {
 
     // Make an Axios request
     try {
-      const response = await axios.post("your-backend-url", {
+      const response = await axios.post("/kakao", {
         idToken: idToken,
       });
       console.log(response.data); // Handle the response from the backend
