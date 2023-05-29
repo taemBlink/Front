@@ -13,7 +13,7 @@ export default Blinkhub;
 
 const StWrap = styled.div`
   background-color: #222;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
