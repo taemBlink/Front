@@ -6,6 +6,8 @@ import Posting from "../Pages/Posting";
 import PostList from "../Pages/PostList";
 import Detailpage from "../Components/Layout/Bodies/Deitail/Detailpage";
 import Signup from "../Pages/Signup";
+import Mypage from "../Pages/Mypage";
+import Signin from "../Pages/Signin";
 
 // 2. Router 라는 함수를 만들고 아래와 같이 작성합니다.
 //BrowserRouter를 Router로 감싸는 이유는,
@@ -16,9 +18,11 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="posting" element={<Posting />} />
-        <Route path="/postlist" element={<PostList />} />
-        <Route path="/detail/:postId" element={<Detailpage />} />
+        <Route path="/job/:job_id" element={<PostList />} />
+        <Route path="/job/detail/:job_id" element={<Detailpage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Signin />} />
+        <Route path="/mypage/:user_id" element={<Mypage />} />
       </Routes>
     </BrowserRouter>
   );
