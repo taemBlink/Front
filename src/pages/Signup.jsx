@@ -139,6 +139,7 @@ function Signup() {
       return;
     }
   };
+
   return (
     <StSignupContainer>
       <Title>
@@ -190,7 +191,6 @@ function Signup() {
         <Link to={"/"}>
           <StBtn backgroundcolor="#fa5a5a">취소</StBtn>
         </Link>
-        <button>카카오 로그인</button>
       </div>
     </StSignupContainer>
   );

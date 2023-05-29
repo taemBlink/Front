@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthApi } from "../shared/Api";
+import axios from "axios";
+import KakaoLogin from "react-kakao-login";
 
 // 토큰 디코드
 const parseJwt = (token) => {
@@ -19,7 +21,7 @@ const parseJwt = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-function SignIn() {
+function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
@@ -91,6 +93,28 @@ function SignIn() {
       return;
     }
   };
+
+  const kakaoClientId = "JavaScript KEY";
+
+  const kakaoOnSuccess = async (data) => {
+    console.log(data);
+    const idToken = data.response.id_token; // 인가코드 백엔드로 전달
+
+    // Make an Axios request
+    try {
+      const response = await axios.post("your-backend-url", {
+        idToken: idToken,
+      });
+      console.log(response.data); // Handle the response from the backend
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const kakaoOnFailure = (error) => {
+    console.log(error);
+  };
+
   return (
     <StContiner onSubmit={onSubmitHandler}>
       <h1>로그인</h1>
@@ -112,6 +136,12 @@ function SignIn() {
         <StBtn backgroundcolor="#6698cb" type="submit">
           로그인
         </StBtn>
+
+        <KakaoLogin
+          token={kakaoClientId}
+          onSuccess={kakaoOnSuccess}
+          onFail={kakaoOnFailure}
+        />
         <Link to={"/signup"}>
           <StBtn backgroundcolor="#7fccde" type="button">
             회원가입
@@ -126,7 +156,7 @@ function SignIn() {
     </StContiner>
   );
 }
-export default SignIn;
+export default Signin;
 
 const StContiner = styled.form`
   max-width: 1200px;
