@@ -36,9 +36,7 @@ function Header() {
       <div>
         <StJoinTeamBtn>팀 블링크 채용</StJoinTeamBtn>
       </div>
-      <div>
-        <button>팀 블링크 채용</button>
-      </div>
+
       <Link to={"/posting"}>
         <StBtnPosting>글쓰기</StBtnPosting>
       </Link>
