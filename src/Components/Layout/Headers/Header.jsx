@@ -8,14 +8,14 @@ Modal.setAppElement("#root");
 
 function Header() {
   const [showModal, setShowModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedin, setIsLoggedin] = useState(false); // 상태 추가
 
   const handleLoginClick = () => {
     setShowModal(true);
   };
 
   const handleLogoutClick = () => {
-    setIsLoggedIn(false);
+    setIsLoggedin(false); // 상태 업데이트
   };
 
   const closeModal = () => {
@@ -23,7 +23,7 @@ function Header() {
   };
 
   const handleLoginSuccess = () => {
-    setIsLoggedIn(true);
+    setIsLoggedin(true); // 로그인 성공 시 상태 업데이트
     closeModal(); // 로그인 성공 후 Modal 닫기
   };
 
@@ -46,7 +46,7 @@ function Header() {
         <Link to={"/posting"}>
           <StBtnPosting>글쓰기</StBtnPosting>
         </Link>
-        {isLoggedIn ? (
+        {isLoggedin ? (
           <>
             <button>마이페이지</button>
             <StBtnSignIn onClick={handleLogoutClick}>로그아웃</StBtnSignIn>
@@ -63,6 +63,7 @@ function Header() {
       >
         <Signin
           handleLoginSuccess={handleLoginSuccess}
+          setIsLoggedin={setIsLoggedin}
           closeModal={closeModal}
         />
       </Modal>

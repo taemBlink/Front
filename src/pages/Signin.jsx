@@ -22,7 +22,7 @@ const parseJwt = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-function Signin({ handleLoginSuccess, closeModal }) {
+function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
@@ -101,7 +101,14 @@ function Signin({ handleLoginSuccess, closeModal }) {
     }
   };
 
-  const kakaoClientId = "JavaScript KEY";
+  const loginWithKakao = () => {
+    const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
+    const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&responce_type=code`;
+    // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
+    window.location.href = KAKAO_AUTH_URL;
+  };
+  const kakaoClientId = `${process.env.REACT_APP_CLIENT_ID}`;
 
   const kakaoOnSuccess = async (data) => {
     console.log(data);
@@ -113,6 +120,12 @@ function Signin({ handleLoginSuccess, closeModal }) {
         idToken: idToken,
       });
       console.log(response.data); // Handle the response from the backend
+
+      // 로그인 성공 시 상태 업데이트
+      setIsLoggedin(true);
+
+      // 홈 화면으로 이동
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -145,6 +158,7 @@ function Signin({ handleLoginSuccess, closeModal }) {
         </StBtn>
 
         <KakaoLogin
+          onClick={() => loginWithKakao()}
           token={kakaoClientId}
           onSuccess={kakaoOnSuccess}
           onFail={kakaoOnFailure}

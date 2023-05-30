@@ -8,6 +8,7 @@ import Detailpage from "../Components/Layout/Bodies/Deitail/Detailpage";
 import Signup from "../Pages/Signup";
 import Mypage from "../Pages/Mypage";
 import Signin from "../Pages/Signin";
+import KakaoCallback from "../Components/features/Kakao/KakaoCallback";
 
 // 2. Router 라는 함수를 만들고 아래와 같이 작성합니다.
 //BrowserRouter를 Router로 감싸는 이유는,
@@ -23,6 +24,7 @@ const Router = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/mypage/:user_id" element={<Mypage />} />
+        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
       </Routes>
     </BrowserRouter>
   );

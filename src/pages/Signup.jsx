@@ -8,7 +8,7 @@ const emailRegex =
   /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
 // 이름 정규식
-const kornameRegex = /^[가-힣]{2,4}$/;
+// const kornameRegex = /^[가-힣]{2,4}$/;
 // 한글 이름 2~4자 이내
 
 // 닉네임 정규식
@@ -19,7 +19,7 @@ const passwordRegex = /^.{4,}$/;
 
 // 오류 메세지
 const alertMessage = {
-  nameErr: "이름 규칙에 어긋납니다! (한글을 사용하여 2글자 이상)",
+  // nameErr: "이름 규칙에 어긋납니다! (한글을 사용하여 2글자 이상)",
   nickErr: "닉네임 규칙에 어긋납니다! (영문과 숫자를 사용하여 3글자 이상)",
   pwErr: "비밀번호 규칙에 어긋납니다!!(4글자 이상)",
   pwMachErr: "패스워드가 불일치합니다.",
@@ -33,10 +33,10 @@ function Signup() {
     value: "",
     err: null,
   });
-  const [korName, setkorName] = useState({
-    value: "",
-    err: null,
-  });
+  // const [korName, setkorName] = useState({
+  //   value: "",
+  //   err: null,
+  // });
 
   const [nickName, setNickName] = useState({
     value: "",
@@ -56,19 +56,19 @@ function Signup() {
 
   const onEmailChangeHandler = (event) => {
     const inputEmail = event.target.value;
-    setkorName((prevEmail) => ({
+    setEmail((prevEmail) => ({
       ...prevEmail,
       value: inputEmail,
     }));
   };
 
-  const onkorNameChangeHandler = (event) => {
-    const inputkorName = event.target.value;
-    setkorName((prevkorName) => ({
-      ...prevkorName,
-      value: inputkorName,
-    }));
-  };
+  // const onkorNameChangeHandler = (event) => {
+  //   const inputkorName = event.target.value;
+  //   setkorName((prevkorName) => ({
+  //     ...prevkorName,
+  //     value: inputkorName,
+  //   }));
+  // };
 
   const onNickNameChangeHandler = (event) => {
     const inputNickName = event.target.value;
@@ -96,8 +96,8 @@ function Signup() {
 
   const verifySiginUpData = () => {
     // 유효성 검사 결과 저장
-    const verifiedEmail = emailRegex.test(korName.value);
-    const verifiedkorname = kornameRegex.test(korName.value);
+    const verifiedEmail = emailRegex.test(email.value);
+    // const verifiedkorname = kornameRegex.test(korName.value);
     const verifiedNickname = nicknameRegex.test(nickName.value);
     const verifiedPassword = passwordRegex.test(password.value);
     const verifiedConfirmPassword = password.value === confirmPassword.value;
@@ -107,10 +107,10 @@ function Signup() {
       err: !verifiedEmail,
     }));
 
-    setkorName((prevkorName) => ({
-      ...prevkorName,
-      err: !verifiedkorname,
-    }));
+    // setkorName((prevkorName) => ({
+    //   ...prevkorName,
+    //   err: !verifiedkorname,
+    // }));
 
     setNickName((prevNickName) => ({
       ...prevNickName,
@@ -126,7 +126,7 @@ function Signup() {
       ...prevConfimPw,
       err: !verifiedConfirmPassword,
     }));
-    return !verifiedkorname || !verifiedPassword || !verifiedConfirmPassword
+    return !verifiedNickname || !verifiedPassword || !verifiedConfirmPassword
       ? false
       : true;
   };
@@ -190,7 +190,7 @@ function Signup() {
         placeholder="My Nickname"
         onChange={onNickNameChangeHandler}
       />
-      <label>
+      {/* <label>
         이름 :
         <StAlertBox>{korName.err ? alertMessage.nameErr : null}</StAlertBox>
       </label>
@@ -198,7 +198,7 @@ function Signup() {
         type="text"
         placeholder="My name"
         onChange={onkorNameChangeHandler}
-      />
+      /> */}
       <label>
         비밀번호 :
         <StAlertBox>{password.err ? alertMessage.pwErr : null}</StAlertBox>
