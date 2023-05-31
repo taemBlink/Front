@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 // Toast 에디터
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -15,6 +15,11 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import styled from "styled-components";
 
 export default function ToastEditor() {
+  const [title, setTitle] = useState("")
+  const titleChangeHandler = (e) => {
+    setTitle(e.target.value)
+  }
+  
   const editorRef = useRef();
 
   const onChange = () => {
@@ -37,7 +42,7 @@ export default function ToastEditor() {
   return (
     <StContainer>
       <label>제목:</label>
-      <input />
+      <input type="text" value={title} onChange={(e)=>titleChangeHandler(e)}/>
       <label>지역:</label>
       <input />
       <label>모집기한:</label>
