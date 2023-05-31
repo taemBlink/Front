@@ -24,7 +24,7 @@ const Router = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/mypage/:user_id" element={<Mypage />} />
-        <Route path="/oauth/callback/kakao" element={<KakaoCallback />} />
+        <Route path="/oauth" element={<KakaoCallback />} />
       </Routes>
     </BrowserRouter>
   );

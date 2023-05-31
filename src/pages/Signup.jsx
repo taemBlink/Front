@@ -43,6 +43,11 @@ function Signup() {
     err: null,
   });
 
+  const [companyName, setCompanyName] = useState({
+    value: "",
+    err: null,
+  });
+
   const [password, setPassword] = useState({
     value: "",
     err: null,
@@ -133,23 +138,21 @@ function Signup() {
   const onSubmitHandler = async () => {
     const signUpVerfy = verifySiginUpData();
     if (signUpVerfy) {
-      // 회원 가입 요청 가능
-
       try {
         if (userType === "regular") {
-          // Regular user signup
           const res = await AuthApi.signup({
             email: email.value,
             password: password.value,
-            userType: "regular", // Explicitly set the user type as 'regular'
+            userType: "regular",
+            nickname: nickName.value, // Add nickname to signup data for regular users
           });
           alert(res.data.message);
         } else if (userType === "hr") {
-          // HR manager signup
           const res = await AuthApi.signup({
             email: email.value,
             password: password.value,
-            userType: "hr", // Explicitly set the user type as 'hr'
+            userType: "hr",
+            companyName: nickName.value, // Add companyName to signup data for HR managers
           });
           alert(res.data.message);
         }
@@ -159,7 +162,6 @@ function Signup() {
         alert(err.response.data.errorMessage);
       }
     } else {
-      // 회원가입 부적합으로 함수 종료
       return;
     }
   };
@@ -181,15 +183,24 @@ function Signup() {
         <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
       </label>
       <input type="text" placeholder="e-mail" onChange={onEmailChangeHandler} />
-      <label>
+      {/* <label>
         닉네임 :
+        <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
+      </label> */}
+      <label>
+        {userType === "hr" ? "회사명" : "닉네임"} :
         <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
       </label>
       <input
         type="text"
-        placeholder="My Nickname"
+        placeholder={userType === "hr" ? "My Company Name" : "My Nickname"}
         onChange={onNickNameChangeHandler}
       />
+      {/* <input
+        type="text"
+        placeholder="My Nickname"
+        onChange={onNickNameChangeHandler}
+      /> */}
       {/* <label>
         이름 :
         <StAlertBox>{korName.err ? alertMessage.nameErr : null}</StAlertBox>
