@@ -15,11 +15,17 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import styled from "styled-components";
 
 export default function ToastEditor() {
-  const [title, setTitle] = useState("")
+  const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
-    setTitle(e.target.value)
-  }
-  
+    setTitle(e.target.value);
+  };
+
+  const [endDate, setEndDate] = useState("");
+  const dateChangeHandler = (e) => {
+    setEndDate(e.target.value);
+    console.log(endDate)
+  };
+
   const editorRef = useRef();
 
   const onChange = () => {
@@ -42,11 +48,19 @@ export default function ToastEditor() {
   return (
     <StContainer>
       <label>제목:</label>
-      <input type="text" value={title} onChange={(e)=>titleChangeHandler(e)}/>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => titleChangeHandler(e)}
+      />
       <label>지역:</label>
       <input />
       <label>모집기한:</label>
-      <input type="date"/>
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => dateChangeHandler(e)}
+      />
       <label>직군:</label>
       <input />
       <StEditorWrap>
@@ -111,7 +125,7 @@ const StBtnCancel = styled(StBtnSubmit)`
   background-color: white;
   color: #da3238;
   border-color: #da3238;
-  border: 2px solid ;
+  border: 2px solid;
 `;
 const StContainer = styled.div`
   max-width: 1200px;
@@ -123,4 +137,4 @@ const StContainer = styled.div`
 
 const StEditorWrap = styled.div`
   margin-top: 20px;
-`
+`;
