@@ -284,7 +284,7 @@ function Signup() {
 export default Signup;
 
 const StSignupContainer = styled.div`
-  max-width: 1200px;
+  max-width: 500px;
   margin: 15px auto;
   padding: 20px;
   display: flex;
