@@ -181,7 +181,7 @@ function Signup() {
       <h1>회원가입</h1>
 
       <label>
-        사용자 유형:
+        사용자 유형 :&nbsp;
         <select value={userType} onChange={(e) => setUserType(e.target.value)}>
           <option value="regular">일반회원</option>
           <option value="hr">인사담당자</option>
