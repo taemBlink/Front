@@ -12,7 +12,7 @@ function PostList() {
   useEffect(() => {
     const fetchPostList = async () => {
       try {
-        const response = await axios.get("http://example.com/api/posts"); // 백엔드 API의 주소로 변경해야 합니다.
+        const response = await axios.get("http://54.180.142.54/job"); // 백엔드 API의 주소로 변경해야 합니다.
         setPostList(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -36,12 +36,12 @@ function PostList() {
         ) : (
           <>
             {postList.map((post, index) => (
-              <RepeatedDiv key={post.id}>
-                <Row>
-                  <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
+              <Card key={post.id} onClick={() => handlePostClick(post.id)}>
+                <CardContent>
+                  <h2>{post.title}</h2>
                   <StImgBox imageUrl={post.imageURL}></StImgBox>
-                </Row>
-              </RepeatedDiv>
+                </CardContent>
+              </Card>
             ))}
           </>
         )}
@@ -51,31 +51,33 @@ function PostList() {
 }
 
 export default PostList;
+
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: 100vh;
 `;
 
-const RepeatedDiv = styled.div`
-  flex: 1;
-  width: 50%;
-
-  &:nth-child(2n) {
-    /* 두 번째 열 스타일 */
-  }
+const Card = styled.div`
+  flex-basis: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  cursor: pointer;
 `;
+
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
 const StImgBox = styled.div`
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
   width: 100%;
   height: 80%;
-`;
-const Row = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
 `;

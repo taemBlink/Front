@@ -48,6 +48,11 @@ function Signup() {
     err: null,
   });
 
+  // const [companyName, setCompanyName] = useState({
+  //   value: "",
+  //   err: null,
+  // });
+
   const [password, setPassword] = useState({
     value: "",
     err: null,
@@ -80,6 +85,14 @@ function Signup() {
     setNickName((prevNickName) => ({
       ...prevNickName,
       value: inputNickName,
+    }));
+  };
+
+  const onCompanyNameChangeHandler = (event) => {
+    const inputCompanyName = event.target.value;
+    setCompanyName((prevCompanyName) => ({
+      ...prevCompanyName,
+      value: inputCompanyName,
     }));
   };
 
@@ -136,27 +149,24 @@ function Signup() {
       : true;
   };
   const onSubmitHandler = async () => {
-    const signUpVerfy = verifySiginUpData();
-    if (signUpVerfy) {
+    const signUpVerify = verifySiginUpData();
+    if (signUpVerify) {
       try {
+        const payload = {
+          email: email.value,
+          password: password.value,
+          companyName: companyName.value,
+          nickname: nickName.value,
+        };
+
         if (userType === "regular") {
-          const res = await AuthApi.signup({
-            email: email.value,
-            password: password.value,
-            userType: "regular",
-            nickname: nickName.value, // Add nickname to signup data for regular users
-          });
-          alert(res.data.message);
+          payload.user_type = "일반회원";
         } else if (userType === "hr") {
-          const res = await AuthApi.signup({
-            email: email.value,
-            password: password.value,
-            userType: "hr",
-            companyName: nickName.value, // Add companyName to signup data for HR managers
-          });
-          alert(res.data.message);
+          payload.user_type = "인사담당자";
         }
 
+        const res = await AuthApi.signup(payload);
+        alert(res.data.message);
         navigate("/");
       } catch (err) {
         alert(err.response.data.errorMessage);
@@ -183,19 +193,49 @@ function Signup() {
         <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
       </label>
       <input type="text" placeholder="e-mail" onChange={onEmailChangeHandler} />
-      {/* <label>
+      <label>
         닉네임 :
         <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
-      </label> */}
-      <label>
+      </label>
+      {/* <label>
         {userType === "hr" ? "회사명" : "닉네임"} :
         <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
-      </label>
+      </label> */}
       <input
         type="text"
-        placeholder={userType === "hr" ? "My Company Name" : "My Nickname"}
+        placeholder={userType === "hr" ? "My Nickname" : "My Nickname"}
         onChange={onNickNameChangeHandler}
       />
+      {userType === "hr" && (
+        <>
+          <label>
+            회사명 :
+            <StAlertBox>
+              {/* {companyName.err ? alertMessage.nickErr : null} */}
+            </StAlertBox>
+          </label>
+          <input
+            type="text"
+            placeholder="My Company Name"
+            onChange={onCompanyNameChangeHandler}
+          />
+        </>
+      )}
+      {userType === "regular" && (
+        <>
+          <label>
+            회사명 :
+            <StAlertBox>
+              {/* {companyName.err ? alertMessage.nickErr : null} */}
+            </StAlertBox>
+          </label>
+          <input
+            type="text"
+            placeholder="My Company Name"
+            onChange={onCompanyNameChangeHandler}
+          />
+        </>
+      )}
       {/* <input
         type="text"
         placeholder="My Nickname"
@@ -231,11 +271,11 @@ function Signup() {
         onChange={onConfirmPasswordChangeHandler}
       />
       <div>
-        <StBtn backgroundcolor="#7fccde" onClick={onSubmitHandler}>
+        <StBtnSubmit backgroundcolor="#7fccde" onClick={onSubmitHandler}>
           회원가입
-        </StBtn>
+        </StBtnSubmit>
         <Link to={"/"}>
-          <StBtn backgroundcolor="#fa5a5a">취소</StBtn>
+          <StBtnCancel backgroundcolor="#fa5a5a">취소</StBtnCancel>
         </Link>
       </div>
     </StSignupContainer>
@@ -257,20 +297,45 @@ const StSignupContainer = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 `;
-const StBtn = styled.button`
-  margin: 10px;
-  background-color: ${(props) => props.backgroundcolor};
-  position: relative;
-  border: 0;
-  padding: 15px 25px;
-  display: inline-block;
-  text-align: center;
+// const StBtn = styled.button`
+//   margin-right: 8px;
+//   background-color: #da3238;
+//   border-color: #da3238;
+//   color: white;
+//   font-size: 13px;
+//   font-weight: bold;
+//   border: none;
+//   box-shadow: none;
+//   border-radius: 0;
+//   width: 90px;
+//   height: 45px;
+//   &:active {
+//     filter: brightness(0.9);
+//   }
+// `;
+
+const StBtnSubmit = styled.button`
+  margin-right: 8px;
+  background-color: #da3238;
+  border-color: #da3238;
   color: white;
-  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 90px;
+  height: 45px;
   &:active {
-    background-color: white;
-    color: black;
+    filter: brightness(0.9);
   }
+`;
+
+const StBtnCancel = styled(StBtnSubmit)`
+  margin-right: 8px;
+  background-color: white;
+  color: #222;
+  border: 2px solid #d4d4d4;
 `;
 
 const StAlertBox = styled.div`

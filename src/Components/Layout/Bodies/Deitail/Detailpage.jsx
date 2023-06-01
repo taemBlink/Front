@@ -12,7 +12,7 @@ function Detailpage() {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://example.com/api/posts/${postId}`
+          `http://api.ysizuku.com/api/posts/${postId}`
         ); // Replace with the appropriate API endpoint to fetch a single post
         setPost(response.data);
         setIsLoading(false);

@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Signin from "../../../Pages/Signin";
-import Modal from "react-modal";
-
-Modal.setAppElement("#root");
+import { createPortal } from "react-dom";
 
 function Header() {
   const [showModal, setShowModal] = useState(false);
-  const [isLoggedin, setIsLoggedin] = useState(false); // 상태 추가
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  const [userType, setUserType] = useState("");
 
   const handleLoginClick = () => {
     setShowModal(true);
   };
 
   const handleLogoutClick = () => {
-    setIsLoggedin(false); // 상태 업데이트
+    setIsLoggedin(false); // Update state
   };
 
   const closeModal = () => {
@@ -23,8 +23,8 @@ function Header() {
   };
 
   const handleLoginSuccess = () => {
-    setIsLoggedin(true); // 로그인 성공 시 상태 업데이트
-    closeModal(); // 로그인 성공 후 Modal 닫기
+    setIsLoggedin(true); // Update state
+    closeModal(); // Close modal after successful login
   };
 
   return (
@@ -36,7 +36,9 @@ function Header() {
         <Link to={"/"}>
           <StMainBtn>홈</StMainBtn>
         </Link>
-        <StMainBtn>채용 공고</StMainBtn>
+        <Link to={"/job"}>
+          <StMainBtn>채용 공고</StMainBtn>
+        </Link>
       </StSpaceDiv>
       <div>
         <StJoinTeamBtn>팀 블링크 채용</StJoinTeamBtn>
@@ -44,7 +46,9 @@ function Header() {
 
       <div>
         <Link to={"/posting"}>
-          <StBtnPosting>글쓰기</StBtnPosting>
+          {userType !== "regular" && ( // userType이 "regular"이 아닐 때에만 글쓰기 버튼을 표시합니다.
+            <StBtnPosting>글쓰기</StBtnPosting>
+          )}
         </Link>
         {isLoggedin ? (
           <>
@@ -56,17 +60,17 @@ function Header() {
         )}
       </div>
 
-      <Modal
-        isOpen={showModal}
-        onRequestClose={closeModal}
-        contentLabel="Login Modal"
-      >
-        <Signin
-          handleLoginSuccess={handleLoginSuccess}
-          setIsLoggedin={setIsLoggedin}
-          closeModal={closeModal}
-        />
-      </Modal>
+      {showModal &&
+        createPortal(
+          <StModalBackdrop>
+            <Signin
+              handleLoginSuccess={handleLoginSuccess}
+              setIsLoggedin={setIsLoggedin}
+              closeModal={closeModal}
+            />
+          </StModalBackdrop>,
+          document.getElementById("modal-root")
+        )}
     </StHeader>
   );
 }
@@ -111,7 +115,6 @@ const StBtnSignIn = styled(StBtnPosting)`
   margin-right: 8px;
   background-color: white;
   color: #222;
-
   border: 2px solid #d4d4d4;
 `;
 
@@ -138,9 +141,18 @@ const StLogoBtn = styled.button`
   border: none;
   box-shadow: none;
   background-color: white;
-
   cursor: pointer;
   &:active {
     filter: brightness(0.9);
   }
+`;
+
+const StModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Increase the z-index value */
 `;
