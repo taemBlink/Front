@@ -7,12 +7,15 @@ import { Editor } from "@toast-ui/react-editor";
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
-
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
+
 import styled from "styled-components";
+import { AuthApi } from "../../../shared/Api";
+import { Link } from "react-router-dom";
+
+const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
 export default function ToastEditor() {
   const [title, setTitle] = useState("");
@@ -20,9 +23,22 @@ export default function ToastEditor() {
     setTitle(e.target.value);
   };
 
+  // 채용공고 마감일 지정
   const [endDate, setEndDate] = useState("");
   const dateChangeHandler = (e) => {
     setEndDate(e.target.value);
+  };
+
+  // 지역값 저장
+  const [address, setAddress] = useState("");
+
+  // 모집 기한 상시체용 어부
+  const [isChecked, setIsChecked] = useState(false);
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+    if (isChecked) {
+      setEndDate(""); // 모집 기한이 null일 경우 상시체용으로 처리
+    }
   };
 
   const [selectedJob, setSelectedJop] = useState("");
@@ -30,11 +46,15 @@ export default function ToastEditor() {
     setSelectedJop(e.target.value);
   };
 
+  // 본문을 저장
+  const [content, setContent] = useState("");
+
   const editorRef = useRef();
 
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
-    console.log(data);
+    setContent(data);
+    console.log(content);
   };
 
   // 파일 URL을 받아 글에 첨부하기
@@ -46,7 +66,20 @@ export default function ToastEditor() {
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
-    return "URL"
+    try {
+      const res = await AuthApi.imgUoload(blob);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const newPost = {
+    title: title,
+    content: content,
+    keyword: selectedJob,
+    end_date: new Date(endDate),
+    address: address,
   };
 
   return (
@@ -64,14 +97,22 @@ export default function ToastEditor() {
         type="date"
         value={endDate}
         onChange={(e) => dateChangeHandler(e)}
+        disabled={isChecked}
+      />
+      <label>상시채용 여부</label>
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleCheckboxChange}
       />
       <label>직군:</label>
       <select value={selectedJob} onChange={handleJobChange}>
         <option value="">선택해주세요</option>
-        <option value="엔지니어링">엔지니어링</option>
-        <option value="교육">교육</option>
-        <option value="개발">개발</option>
-        <option value="HR·경영지원">HR·경영지원</option>
+        {jobKeyWord.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
       <StEditorWrap>
         <Editor
@@ -99,7 +140,9 @@ export default function ToastEditor() {
       </StEditorWrap>
       <StBtnBox>
         <StBtnSubmit>저장</StBtnSubmit>
-        <StBtnCancel>취소</StBtnCancel>
+        <Link to="/">
+          <StBtnCancel>취소</StBtnCancel>
+        </Link>
       </StBtnBox>
     </StContainer>
   );

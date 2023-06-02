@@ -25,6 +25,8 @@ export const AuthApi = {
     const url = userType === "인사담당자" ? "/login/hr" : "/login/regular";
     return api.post(url, payload);
   },
+  imgUoload: (payload) => api.post("/job/upload", payload),
+  write: (payload)=> api.post("/job/write", payload)
 };
 
 export const getUserData = async (token) => {
