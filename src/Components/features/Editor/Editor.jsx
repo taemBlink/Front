@@ -79,7 +79,7 @@ export default function ToastEditor() {
     content: content,
     keyword: selectedJob,
     end_date: new Date(endDate),
-    address: " ",
+    address: address,
   };
 
   return (

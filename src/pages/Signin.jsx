@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthApi } from "../shared/Api";
@@ -22,7 +22,7 @@ const parseJwt = (token) => {
   return JSON.parse(jsonPayload);
 };
 
-function Signin() {
+function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
@@ -101,7 +101,14 @@ function Signin() {
     }
   };
 
-  const kakaoClientId = "JavaScript KEY";
+  const loginWithKakao = () => {
+    const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
+    const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&responce_type=code`;
+    // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
+    window.location.href = KAKAO_AUTH_URL;
+  };
+  const kakaoClientId = `${process.env.REACT_APP_CLIENT_ID}`;
 
   const kakaoOnSuccess = async (data) => {
     console.log(data);
@@ -109,10 +116,16 @@ function Signin() {
 
     // Make an Axios request
     try {
-      const response = await axios.post("your-backend-url", {
+      const response = await axios.post("http://api.ysizuku.com/kakao", {
         idToken: idToken,
       });
       console.log(response.data); // Handle the response from the backend
+
+      // 로그인 성공 시 상태 업데이트
+      setIsLoggedin(true);
+
+      // 홈 화면으로 이동
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -122,9 +135,36 @@ function Signin() {
     console.log(error);
   };
 
+  const handleCloseClick = (e) => {
+    e.stopPropagation(); // 이벤트 버블링(stopPropagation)을 사용하여 부모 요소로의 이벤트 전파를 막습니다.
+    closeModal();
+  };
+
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        event.stopPropagation();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const kakaoLoginButtonImgPath = "/kakao_login_medium_narrow.png";
   return (
-    <StContiner onSubmit={onSubmitHandler}>
+    <StContiner
+      ref={modalRef}
+      onSubmit={onSubmitHandler}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <StCloseButton onClick={handleCloseClick}>X</StCloseButton>
       <h1>로그인</h1>
+
       <label>이메일</label>
       <input
         type="text"
@@ -139,35 +179,45 @@ function Signin() {
         placeholder="Type your Password"
         onChange={onPasswordChangeHandler}
       />
-      <div>
-        <StBtn backgroundcolor="#6698cb" type="submit">
+      <div style={{ display: "flex", gap: "7px", marginTop: "15px" }}>
+        <StBtnSubmit backgroundcolor="#6698cb" type="submit">
           로그인
-        </StBtn>
+        </StBtnSubmit>
+
+        <Link to={"/signup"}>
+          <StBtnCancel backgroundcolor="#7fccde" type="button">
+            회원가입
+          </StBtnCancel>
+        </Link>
 
         <KakaoLogin
+          onClick={() => loginWithKakao()}
           token={kakaoClientId}
           onSuccess={kakaoOnSuccess}
           onFail={kakaoOnFailure}
+          render={({ onClick }) => (
+            <img
+              src={kakaoLoginButtonImgPath}
+              alt="Kakao Login Button"
+              onClick={onClick}
+            />
+          )}
         />
-        <Link to={"/signup"}>
-          <StBtn backgroundcolor="#7fccde" type="button">
-            회원가입
-          </StBtn>
-        </Link>
-        <Link to={"/"}>
-          <StBtn backgroundcolor="#82c8a0" type="button">
-            뒤로가기
-          </StBtn>
-        </Link>
+        {/* <StBtn backgroundcolor="#82c8a0" type="button" onClick={closeModal}>
+          닫기
+        </StBtn> */}
       </div>
     </StContiner>
   );
 }
+
 export default Signin;
 
 const StContiner = styled.form`
-  max-width: 1200px;
-  margin: 15px auto;
+  width: 600px;
+  height: 800px; /* Adjust the height value as per your preference */
+  overflow-y: auto;
+  margin: 70px auto;
   padding: 20px;
 
   display: flex;
@@ -175,21 +225,44 @@ const StContiner = styled.form`
   gap: 10px;
   flex-direction: column;
 
-  border: 3px solid black;
+  /* Reduce the height of the white background */
+  background-color: white;
+  height: 50vh; /* Adjust the height value as per your preference */
+  overflow-y: auto;
 `;
 
-const StBtn = styled.button`
-  margin: 10px;
-  background-color: ${(props) => props.backgroundcolor};
-  position: relative;
-  border: 0;
-  padding: 15px 25px;
-  display: inline-block;
-  text-align: center;
+const StBtnSubmit = styled.button`
+  margin-right: 8px;
+  background-color: #da3238;
+  border-color: #da3238;
   color: white;
-  border-radius: 10px;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 90px;
+  height: 45px;
   &:active {
-    background-color: white;
-    color: black;
+    filter: brightness(0.9);
   }
+`;
+
+const StBtnCancel = styled(StBtnSubmit)`
+  margin-right: 8px;
+  background-color: white;
+  color: #222;
+  border: 2px solid #d4d4d4;
+`;
+
+const StCloseButton = styled.button`
+  position: absolute;
+  top: 80px;
+  right: 450px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
 `;
