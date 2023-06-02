@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 // Toast 에디터
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -15,6 +15,21 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import styled from "styled-components";
 
 export default function ToastEditor() {
+  const [title, setTitle] = useState("");
+  const titleChangeHandler = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const [endDate, setEndDate] = useState("");
+  const dateChangeHandler = (e) => {
+    setEndDate(e.target.value);
+  };
+
+  const [selectedJob, setSelectedJop] = useState("");
+  const handleJobChange = (e) => {
+    setSelectedJop(e.target.value);
+  };
+
   const editorRef = useRef();
 
   const onChange = () => {
@@ -31,19 +46,33 @@ export default function ToastEditor() {
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
-    return 0;
+    return "URL"
   };
 
   return (
     <StContainer>
       <label>제목:</label>
-      <input />
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => titleChangeHandler(e)}
+      />
       <label>지역:</label>
       <input />
       <label>모집기한:</label>
-      <input type="date"/>
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => dateChangeHandler(e)}
+      />
       <label>직군:</label>
-      <input />
+      <select value={selectedJob} onChange={handleJobChange}>
+        <option value="">선택해주세요</option>
+        <option value="엔지니어링">엔지니어링</option>
+        <option value="교육">교육</option>
+        <option value="개발">개발</option>
+        <option value="HR·경영지원">HR·경영지원</option>
+      </select>
       <StEditorWrap>
         <Editor
           initialValue=" "
@@ -106,7 +135,7 @@ const StBtnCancel = styled(StBtnSubmit)`
   background-color: white;
   color: #da3238;
   border-color: #da3238;
-  border: 2px solid ;
+  border: 2px solid;
 `;
 const StContainer = styled.div`
   max-width: 1200px;
@@ -118,4 +147,4 @@ const StContainer = styled.div`
 
 const StEditorWrap = styled.div`
   margin-top: 20px;
-`
+`;
