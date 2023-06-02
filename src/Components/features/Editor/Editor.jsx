@@ -23,7 +23,11 @@ export default function ToastEditor() {
   const [endDate, setEndDate] = useState("");
   const dateChangeHandler = (e) => {
     setEndDate(e.target.value);
-    console.log(endDate)
+  };
+
+  const [selectedJob, setSelectedJop] = useState("");
+  const handleJobChange = (e) => {
+    setSelectedJop(e.target.value);
   };
 
   const editorRef = useRef();
@@ -42,7 +46,7 @@ export default function ToastEditor() {
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
-    return 0;
+    return "URL"
   };
 
   return (
@@ -62,7 +66,13 @@ export default function ToastEditor() {
         onChange={(e) => dateChangeHandler(e)}
       />
       <label>직군:</label>
-      <input />
+      <select value={selectedJob} onChange={handleJobChange}>
+        <option value="">선택해주세요</option>
+        <option value="엔지니어링">엔지니어링</option>
+        <option value="교육">교육</option>
+        <option value="개발">개발</option>
+        <option value="HR·경영지원">HR·경영지원</option>
+      </select>
       <StEditorWrap>
         <Editor
           initialValue=" "
