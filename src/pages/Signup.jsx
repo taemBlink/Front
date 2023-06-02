@@ -157,19 +157,14 @@ function Signup() {
           password: password.value,
           companyName: companyName.value,
           nickname: nickName.value,
+          userType: userType === "regular" ? "일반회원" : "인사담당자",
         };
 
-        if (userType === "regular") {
-          payload.user_type = "일반회원";
-        } else if (userType === "hr") {
-          payload.user_type = "인사담당자";
-        }
-
-        const res = await AuthApi.signup(payload);
-        alert(res.data.message);
+        const response = await AuthApi.signup(payload);
+        alert(response.message);
         navigate("/");
       } catch (err) {
-        alert(err.response.data.errorMessage);
+        alert(err.errorMessage);
       }
     } else {
       return;

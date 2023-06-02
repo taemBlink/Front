@@ -14,16 +14,20 @@ export const api = axios.create({
 //   signup: (payload) => api.post("/signup", payload),
 //   signin: (payload) => api.post("/login", payload),
 // };
+// Api.jsx
+
 export const AuthApi = {
   signup: (payload) => {
-    const userType = payload.user_type; // 사용자 유형 (인사담당자 또는 일반회원)
-    const url = userType === "인사담당자" ? "/signup/hr" : "/signup/regular";
-    return api.post(url, payload);
+    const url = "/signup";
+    return api.post(url, payload).then((response) => {
+      return response.data;
+    });
   },
   signin: (payload) => {
-    const userType = payload.user_type; // 사용자 유형 (인사담당자 또는 일반회원)
-    const url = userType === "인사담당자" ? "/login/hr" : "/login/regular";
-    return api.post(url, payload);
+    const url = "/login";
+    return api.post(url, payload).then((response) => {
+      return response.data;
+    });
   },
 };
 
