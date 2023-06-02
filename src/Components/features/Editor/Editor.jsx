@@ -120,7 +120,7 @@ export default function ToastEditor() {
           placeholder="내용을 입력해주세요."
           previewStyle="vertical" // 미리보기 스타일 지정
           height="700px" // 에디터 창 높이
-          initialEditType="markdown" // 초기 입력모드 설정(디폴트 markdown)
+          initialEditType="WYSIWYG" // 초기 입력모드 설정(디폴트 markdown)
           onChange={onChange}
           toolbarItems={[
             // 툴바 옵션 설정
