@@ -13,6 +13,8 @@ export const AuthApi = {
   // 회원정보 관련
   signup: (payload) => api.post("/signup", payload),
   signin: (payload) => api.post("/signin", payload),
+  imgUoload: (payload) => api.post("/job/upload", payload),
+  write: (payload)=> api.post("/job/write", payload)
 };
 
 export const getUserData = async (token) => {
