@@ -60,15 +60,18 @@ export default function ToastEditor() {
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
     const url = await uploadImage(blob);
-    callback(url, "alt text");
+    callback(process.env.REACT_APP_BACKEND_SERVER_URL+url, "alt text");
     return false;
   };
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
+    const formData = new FormData();
+    formData.append("file", blob);
     try {
-      const res = await AuthApi.imgUoload(blob);
-      console.log(res);
+      const res = await AuthApi.imgUoload(formData);
+      console.log(res.data.url)
+      return res.data.url
     } catch (err) {
       console.log(err);
     }
@@ -78,7 +81,7 @@ export default function ToastEditor() {
     title: title,
     content: content,
     keyword: selectedJob,
-    end_date: new Date(endDate),
+    end_date: endDate,
     address: address,
   };
 
