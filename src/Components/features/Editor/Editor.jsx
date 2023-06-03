@@ -1,4 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { AuthApi } from "../../../shared/Api";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 // Toast 에디터
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -11,14 +15,25 @@ import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 
-import styled from "styled-components";
-import { AuthApi } from "../../../shared/Api";
-import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
-
 const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
 export default function ToastEditor() {
+// 지역 정보 검색
+const [sidos, setSidos] = useState([]);
+const getFindSido = async() => {
+  try {
+    const res = await AuthApi.findsido();
+    const sidoArray = res.data.data.map(item => item.sido)
+    setSidos(sidoArray)
+  } catch (err) {
+    console.log(err);
+  }
+}
+useEffect(() => {
+  getFindSido()
+}, []);
+
+
   const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
@@ -32,6 +47,10 @@ export default function ToastEditor() {
 
   // 지역값 저장
   const [address, setAddress] = useState("");
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
 
   // 모집 기한 상시체용 어부
   const [isChecked, setIsChecked] = useState(false);
@@ -82,7 +101,7 @@ export default function ToastEditor() {
     content: content,
     keywords: selectedJob,
     end_date: endDate,
-    address: "address",
+    address: address,
   };
 
   const [cookies] = useCookies(["authorization"]);
@@ -112,7 +131,14 @@ export default function ToastEditor() {
         onChange={(e) => titleChangeHandler(e)}
       />
       <label>지역:</label>
-      <input />
+      <select value={address} onChange={handleAddressChange}>
+        <option value="">선택해주세요</option>
+        {sidos.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <label>모집기한:</label>
       <input
         type="date"
