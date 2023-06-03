@@ -14,7 +14,6 @@ export const api = axios.create({
 //   signup: (payload) => api.post("/signup", payload),
 //   signin: (payload) => api.post("/login", payload),
 // };
-
 export const AuthApi = {
   signup: async (payload) => {
     const url = "/signup";
@@ -22,10 +21,11 @@ export const AuthApi = {
     return response.data;
   },
   signin: async (payload) => {
-    const url = "/login";
-    const response = await api.post(url, payload);
+    const response = await api.post("/login", payload);
     return response.data;
   },
+  imgUoload: (payload) => api.post("/job/upload", payload),
+  write: (payload) => api.post("/job/write", payload),
 };
 
 export const getUserData = async (token) => {

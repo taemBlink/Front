@@ -38,7 +38,7 @@ function Signup() {
   //   err: null,
   // });
 
-  const [nickName, setNickName] = useState({
+  const [name, setNickName] = useState({
     value: "",
     err: null,
   });
@@ -116,7 +116,7 @@ function Signup() {
     // 유효성 검사 결과 저장
     const verifiedEmail = emailRegex.test(email.value);
     // const verifiedkorname = kornameRegex.test(korName.value);
-    const verifiedNickname = nicknameRegex.test(nickName.value);
+    const verifiedNickname = nicknameRegex.test(name.value);
     const verifiedPassword = passwordRegex.test(password.value);
     const verifiedConfirmPassword = password.value === confirmPassword.value;
 
@@ -156,12 +156,17 @@ function Signup() {
           email: email.value,
           password: password.value,
           companyName: companyName.value,
-          nickname: nickName.value,
-          userType: userType === "regular" ? "일반회원" : "인사담당자",
+          name: name.value,
         };
 
-        const response = await AuthApi.signup(payload);
-        alert(response.message);
+        if (userType === "regular") {
+          payload.user_type = "일반회원";
+        } else if (userType === "hr") {
+          payload.user_type = "인사담당자";
+        }
+
+        const res = await AuthApi.signup(payload);
+        alert(res.message);
         navigate("/");
       } catch (err) {
         alert(err.errorMessage);
@@ -190,7 +195,7 @@ function Signup() {
       <input type="text" placeholder="e-mail" onChange={onEmailChangeHandler} />
       <label>
         닉네임 :
-        <StAlertBox>{nickName.err ? alertMessage.nickErr : null}</StAlertBox>
+        <StAlertBox>{name.err ? alertMessage.nickErr : null}</StAlertBox>
       </label>
       {/* <label>
         {userType === "hr" ? "회사명" : "닉네임"} :

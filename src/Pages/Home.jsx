@@ -42,6 +42,24 @@ function Home() {
                     암호화폐
                   </a>
                 </span>
+
+                <a
+                  href="/kr/post/%EC%97%84%EB%A7%88%EA%B0%80-%EC%82%AC%EC%9C%84-%EA%B5%AC%ED%95%9C%EB%8C%80-CpHsaOpU"
+                  className="tit ico-img"
+                >
+                  엄마가 사위 구한대!!!!!
+                </a>
+                <div className="wrap-info">
+                  <a className="like">
+                    <i className="blind">좋아요</i>17
+                  </a>
+                  <a
+                    href="/kr/post/%EC%97%84%EB%A7%88%EA%B0%80-%EC%82%AC%EC%9C%84-%EA%B5%AC%ED%95%9C%EB%8C%80-CpHsaOpU"
+                    className="cmt"
+                  >
+                    <i className="blind">댓글</i>211
+                  </a>
+                </div>
               </div>
             </div>
           </div>
