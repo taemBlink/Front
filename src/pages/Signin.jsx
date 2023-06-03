@@ -91,40 +91,45 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
     }
   };
 
-  const loginWithKakao = () => {
-    const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
-    const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
-    window.location.href = KAKAO_AUTH_URL;
-  };
-  const kakaoClientId = `${process.env.REACT_APP_CLIENT_ID}`;
+  // const API_URL = process.env.REACT_APP_API_URL;
+  // const KAKAO_ENDPOINT = `${API_URL}/kakao`;
 
-  const kakaoOnSuccess = async (data) => {
-    console.log(data);
-    const idToken = data.response.id_token; // 인가코드 백엔드로 전달
+  // const loginWithKakao = () => {
+  //   const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
+  //   const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
+  //   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  //   // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
+  //   window.location.href = KAKAO_AUTH_URL;
+  // };
+  // const kakaoClientId = `${process.env.REACT_APP_CLIENT_ID}`;
 
-    // Make an Axios request
-    try {
-      const response = await axios.post("http://react.ysizuku.com/kakao", {
-        idToken: idToken,
-      });
-      console.log(response.data); // Handle the response from the backend
+  // const kakaoOnSuccess = async (data) => {
+  //   console.log(data);
+  //   const idToken = data.response.id_token; // 인가코드 백엔드로 전달
 
-      // 로그인 성공 시 상태 업데이트
-      setIsLoggedin(true);
+  //   // Make an Axios request
+  //   try {
+  //     const response = await axios.get(KAKAO_ENDPOINT, {
+  //       params: {
+  //         idToken: idToken,
+  //       },
+  //     });
+  //     console.log(response.data); // Handle the response from the backend
 
-      // 홈 화면으로 이동
-      closeModal();
-      handleLoginSuccess();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     // 로그인 성공 시 상태 업데이트
+  //     setIsLoggedin(true);
 
-  const kakaoOnFailure = (error) => {
-    console.log(error);
-  };
+  //     // 홈 화면으로 이동
+  //     closeModal();
+  //     handleLoginSuccess();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const kakaoOnFailure = (error) => {
+  //   console.log(error);
+  // };
 
   const handleCloseClick = (e) => {
     e.stopPropagation(); // 이벤트 버블링(stopPropagation)을 사용하여 부모 요소로의 이벤트 전파를 막습니다.
@@ -180,8 +185,12 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
             회원가입
           </StBtnCancel>
         </Link>
-
-        <KakaoLogin
+        <div className="App">
+          <a href="http://api.ysizuku.com/kakao">
+            <img src={kakaoLoginButtonImgPath} />{" "}
+          </a>
+        </div>
+        {/* <KakaoLogin
           onClick={() => loginWithKakao()}
           token={kakaoClientId}
           onSuccess={kakaoOnSuccess}
@@ -193,7 +202,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
               onClick={onClick}
             />
           )}
-        />
+        /> */}
         {/* <StBtn backgroundcolor="#82c8a0" type="button" onClick={closeModal}>
           닫기
         </StBtn> */}
