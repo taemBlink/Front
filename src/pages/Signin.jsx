@@ -7,7 +7,6 @@ import KakaoLogin from "react-kakao-login";
 import { getUserData } from "../shared/Api";
 
 function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
-  const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
     err: null,
@@ -67,7 +66,8 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
         // sessionStorage.setItem("isSignIn", JSON.stringify(true));
         // alert("로그인에 성공했습니다.");
 
-        navigate("/");
+        closeModal();
+        handleLoginSuccess();
         // 받아온 사용자 정보 활용 예시
       } catch (err) {
         alert(err.errorMessage || err.message);
@@ -94,7 +94,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const loginWithKakao = () => {
     const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
     const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&responce_type=code`;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
     window.location.href = KAKAO_AUTH_URL;
   };
@@ -106,7 +106,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
 
     // Make an Axios request
     try {
-      const response = await axios.post("http://api.ysizuku.com/kakao", {
+      const response = await axios.post("http://react.ysizuku.com/kakao", {
         idToken: idToken,
       });
       console.log(response.data); // Handle the response from the backend
@@ -115,7 +115,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
       setIsLoggedin(true);
 
       // 홈 화면으로 이동
-      navigate("/");
+      closeModal();
     } catch (error) {
       console.log(error);
     }
