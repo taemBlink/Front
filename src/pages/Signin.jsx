@@ -6,22 +6,6 @@ import axios from "axios";
 import KakaoLogin from "react-kakao-login";
 import { getUserData } from "../shared/Api";
 
-// 토큰 디코드
-const parseJwt = (token) => {
-  var base64Url = token.split(".")[1];
-  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  var jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split("")
-      .map(function (c) {
-        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join("")
-  );
-
-  return JSON.parse(jsonPayload);
-};
-
 function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState({
@@ -57,30 +41,36 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
           email: email.value,
           password: password.value,
         });
-
+        console.log(res);
         // 사용자 정보 요청
-        const userData = await getUserData(res.data.token);
-        console.log(userData); // 받아온 사용자 정보 활용 예시
+        // const userData = await getUserData(res.data.token);
+        // console.log(userData); // 받아온 사용자 정보 활용 예시
 
         const expirationDate = new Date();
-        const setCookie = `Bearer ${res.data.token}`;
+        const setCookie = `token ${res.token}`;
         expirationDate.setTime(expirationDate.getTime() + 24 * 60 * 60 * 1000);
         document.cookie = `authorization=${encodeURIComponent(
           setCookie
         )}; expires=${expirationDate.toUTCString()}; path=/`;
 
+        // if(!res || !res.token) {
+        //   console.log('res : ' + res);
+        //   console.log('res.token : ' + res.token);
+        //   return;
+        // }
+
         // 세선 스토리지에 이메일 저장
-        sessionStorage.setItem(
-          "email",
-          JSON.stringify(parseJwt(res.data.token).email)
-        );
-        sessionStorage.setItem("isSignIn", JSON.stringify(true));
-        alert("로그인에 성공했습니다.");
+        // sessionStorage.setItem(
+        //   "email",
+        //   JSON.stringify(parseJwt(res.token).email)
+        // );
+        // sessionStorage.setItem("isSignIn", JSON.stringify(true));
+        // alert("로그인에 성공했습니다.");
 
         navigate("/");
         // 받아온 사용자 정보 활용 예시
       } catch (err) {
-        alert(err.response.data.errorMessage);
+        alert(err.errorMessage || err.message);
       }
 
       // axios

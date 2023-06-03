@@ -15,18 +15,17 @@ export const api = axios.create({
 //   signin: (payload) => api.post("/login", payload),
 // };
 export const AuthApi = {
-  signup: (payload) => {
-    const userType = payload.user_type; // 사용자 유형 (인사담당자 또는 일반회원)
-    const url = userType === "인사담당자" ? "/signup/hr" : "/signup/regular";
-    return api.post(url, payload);
+  signup: async (payload) => {
+    const url = "/signup";
+    const response = await api.post(url, payload);
+    return response.data;
   },
-  signin: (payload) => {
-    const userType = payload.user_type; // 사용자 유형 (인사담당자 또는 일반회원)
-    const url = userType === "인사담당자" ? "/login/hr" : "/login/regular";
-    return api.post(url, payload);
+  signin: async (payload) => {
+    const response = await api.post("/login", payload);
+    return response.data;
   },
   imgUoload: (payload) => api.post("/job/upload", payload),
-  write: (payload)=> api.post("/job/write", payload)
+  write: (payload) => api.post("/job/write", payload),
 };
 
 export const getUserData = async (token) => {
