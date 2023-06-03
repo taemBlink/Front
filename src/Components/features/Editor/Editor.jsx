@@ -33,7 +33,6 @@ useEffect(() => {
   getFindSido()
 }, []);
 
-
   const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
