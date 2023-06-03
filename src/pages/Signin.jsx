@@ -7,7 +7,6 @@ import KakaoLogin from "react-kakao-login";
 import { getUserData } from "../shared/Api";
 
 function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
-  const navigate = useNavigate();
   const [email, setEmail] = useState({
     value: "",
     err: null,
@@ -68,6 +67,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
         // alert("로그인에 성공했습니다.");
 
         closeModal();
+        handleLoginSuccess();
         // 받아온 사용자 정보 활용 예시
       } catch (err) {
         alert(err.errorMessage || err.message);
@@ -115,7 +115,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
       setIsLoggedin(true);
 
       // 홈 화면으로 이동
-      navigate("/");
+      closeModal();
     } catch (error) {
       console.log(error);
     }
