@@ -67,7 +67,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
         // sessionStorage.setItem("isSignIn", JSON.stringify(true));
         // alert("로그인에 성공했습니다.");
 
-        navigate("/");
+        closeModal();
         // 받아온 사용자 정보 활용 예시
       } catch (err) {
         alert(err.errorMessage || err.message);
