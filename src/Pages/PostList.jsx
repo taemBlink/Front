@@ -12,7 +12,9 @@ function PostList() {
   useEffect(() => {
     const fetchPostList = async () => {
       try {
-        const response = await axios.get("http://54.180.142.54/job"); // 백엔드 API의 주소로 변경해야 합니다.
+        const response = await axios.get(
+          process.env.REACT_APP_BACKEND_SERVER_URL
+        );
         setPostList(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -25,7 +27,7 @@ function PostList() {
   }, []);
 
   const handlePostClick = (postId) => {
-    navigate(`/detail/${postId}`); // 상세 페이지로 이동하도록 경로를 지정합니다.
+    navigate(`/detail/${postId}`);
   };
 
   return (

@@ -116,6 +116,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
 
       // 홈 화면으로 이동
       closeModal();
+      handleLoginSuccess();
     } catch (error) {
       console.log(error);
     }
