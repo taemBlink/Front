@@ -106,7 +106,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
 
     // Make an Axios request
     try {
-      const response = await axios.post("http://api.ysizuku.com/kakao", {
+      const response = await axios.post("http://react.ysizuku.com/kakao", {
         idToken: idToken,
       });
       console.log(response.data); // Handle the response from the backend
