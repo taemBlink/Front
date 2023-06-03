@@ -59,8 +59,8 @@ export default function ToastEditor() {
 
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
-    const url = await uploadImage(blob);
-    callback(process.env.REACT_APP_BACKEND_SERVER_URL+url, "alt text");
+    const imageName = await uploadImage(blob);
+    callback(process.env.REACT_APP_BACKEND_SERVER_URL+`/download/${imageName}`, "alt text");
     return false;
   };
 
@@ -70,8 +70,7 @@ export default function ToastEditor() {
     formData.append("file", blob);
     try {
       const res = await AuthApi.imgUoload(formData);
-      console.log(res.data.url)
-      return res.data.url
+      return res.data.imageName
     } catch (err) {
       console.log(err);
     }
@@ -82,8 +81,18 @@ export default function ToastEditor() {
     content: content,
     keyword: selectedJob,
     end_date: endDate,
-    address: address,
+    address: "address",
   };
+
+  const onSubmiltHandler = async () => {
+    try {
+      const res = await AuthApi.write(newPost);
+      // throw new Error("test")
+      console.log(res)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <StContainer>
@@ -142,7 +151,7 @@ export default function ToastEditor() {
         />
       </StEditorWrap>
       <StBtnBox>
-        <StBtnSubmit>저장</StBtnSubmit>
+        <StBtnSubmit onClick={onSubmiltHandler}>저장</StBtnSubmit>
         <Link to="/">
           <StBtnCancel>취소</StBtnCancel>
         </Link>
