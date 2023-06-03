@@ -80,7 +80,7 @@ export default function ToastEditor() {
   const newPost = {
     title: title,
     content: content,
-    keyword: selectedJob,
+    keywords: selectedJob,
     end_date: endDate,
     address: "address",
   };
