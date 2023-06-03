@@ -94,7 +94,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const loginWithKakao = () => {
     const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
     const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&responce_type=code`;
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
     window.location.href = KAKAO_AUTH_URL;
   };

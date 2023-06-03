@@ -52,7 +52,7 @@ function Header() {
         </Link>
         {isLoggedin ? (
           <>
-            <button>마이페이지</button>
+            <StBtnPosting>마이페이지</StBtnPosting>
             <StBtnSignIn onClick={handleLogoutClick}>로그아웃</StBtnSignIn>
           </>
         ) : (
@@ -99,13 +99,13 @@ const StBtnPosting = styled.button`
   background-color: #da3238;
   border-color: #da3238;
   color: white;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: bold;
   border: none;
   box-shadow: none;
   border-radius: 0;
-  width: 60px;
-  height: 30px;
+  width: 70px;
+  height: 35px;
   &:active {
     filter: brightness(0.9);
   }
