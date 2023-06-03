@@ -14,6 +14,7 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import styled from "styled-components";
 import { AuthApi } from "../../../shared/Api";
 import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
@@ -84,9 +85,17 @@ export default function ToastEditor() {
     address: "address",
   };
 
+  const [cookies] = useCookies(["authorization"]);
+  const config = {
+    headers: {
+      // 쿠키를 헤더에 추가
+      authorization: cookies.authorization,
+    },
+  };
+
   const onSubmiltHandler = async () => {
     try {
-      const res = await AuthApi.write(newPost);
+      const res = await AuthApi.write(newPost, config);
       // throw new Error("test")
       console.log(res)
     } catch (err) {
