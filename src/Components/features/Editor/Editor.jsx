@@ -59,16 +59,18 @@ export default function ToastEditor() {
 
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
-    const url = await uploadImage(blob);
-    callback(url, "alt text");
+    const imageName = await uploadImage(blob);
+    callback(process.env.REACT_APP_BACKEND_SERVER_URL+`/download/${imageName}`, "alt text");
     return false;
   };
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
+    const formData = new FormData();
+    formData.append("file", blob);
     try {
-      const res = await AuthApi.imgUoload(blob);
-      console.log(res);
+      const res = await AuthApi.imgUoload(formData);
+      return res.data.imageName
     } catch (err) {
       console.log(err);
     }
@@ -78,9 +80,19 @@ export default function ToastEditor() {
     title: title,
     content: content,
     keyword: selectedJob,
-    end_date: new Date(endDate),
-    address: address,
+    end_date: endDate,
+    address: "address",
   };
+
+  const onSubmiltHandler = async () => {
+    try {
+      const res = await AuthApi.write(newPost);
+      // throw new Error("test")
+      console.log(res)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <StContainer>
@@ -120,7 +132,7 @@ export default function ToastEditor() {
           placeholder="내용을 입력해주세요."
           previewStyle="vertical" // 미리보기 스타일 지정
           height="700px" // 에디터 창 높이
-          initialEditType="markdown" // 초기 입력모드 설정(디폴트 markdown)
+          initialEditType="WYSIWYG" // 초기 입력모드 설정(디폴트 markdown)
           onChange={onChange}
           toolbarItems={[
             // 툴바 옵션 설정
@@ -139,7 +151,7 @@ export default function ToastEditor() {
         />
       </StEditorWrap>
       <StBtnBox>
-        <StBtnSubmit>저장</StBtnSubmit>
+        <StBtnSubmit onClick={onSubmiltHandler}>저장</StBtnSubmit>
         <Link to="/">
           <StBtnCancel>취소</StBtnCancel>
         </Link>
