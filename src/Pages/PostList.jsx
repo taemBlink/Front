@@ -38,9 +38,18 @@ function PostList() {
         ) : (
           <>
             {postList.map((post, index) => (
-              <Card key={post.id} onClick={() => handlePostClick(post.id)}>
+              <Card key={post.id}>
                 <CardContent>
-                  <h2>{post.title}</h2>
+                  {post.end_date ? (
+                    <p>모집기한: {post.end_date}</p>
+                  ) : (
+                    <p>
+                      상시채용 여부: {post.isChecked ? "상시채용" : "기한 존재"}
+                    </p>
+                  )}
+                  <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
+                  <p>직군: {post.keywords}</p>
+                  <p>{post.address}</p>
                   <StImgBox imageUrl={post.imageURL}></StImgBox>
                 </CardContent>
               </Card>

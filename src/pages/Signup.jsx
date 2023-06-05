@@ -155,7 +155,6 @@ function Signup() {
         const payload = {
           email: email.value,
           password: password.value,
-          companyName: companyName.value,
           name: name.value,
         };
 
@@ -163,6 +162,7 @@ function Signup() {
           payload.user_type = "일반회원";
         } else if (userType === "hr") {
           payload.user_type = "인사담당자";
+          payload.companyName = companyName.value;
         }
 
         const res = await AuthApi.signup(payload);
@@ -198,17 +198,22 @@ function Signup() {
       </label>
       <input type="text" placeholder="name" onChange={onNameChangeHandler} />
 
-      <label>
-        회사명 :
-        <StAlertBox>
-          {/* {companyName.err ? alertMessage.nickErr : null} */}
-        </StAlertBox>
-      </label>
-      <input
-        type="text"
-        placeholder="My Company Name"
-        onChange={onCompanyNameChangeHandler}
-      />
+      {userType === "hr" && (
+        <>
+          <label>
+            회사명 :
+            <StAlertBox>
+              {/* {companyName.err ? alertMessage.nickErr : null} */}
+            </StAlertBox>
+          </label>
+          <input
+            type="text"
+            placeholder="My Company Name"
+            onChange={onCompanyNameChangeHandler}
+          />
+        </>
+      )}
+
       <label>
         비밀번호 :
         <StAlertBox>{password.err ? alertMessage.pwErr : null}</StAlertBox>
