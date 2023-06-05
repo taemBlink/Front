@@ -26,7 +26,9 @@ export const AuthApi = {
   },
   imgUoload: (payload) => api.post("/job/upload", payload),
   write: (payload, config) => api.post("/job/write", payload, { ...config }),
-  findsido: () => api.get("/findsido")
+  findsido: () => api.get("/findsido"),
+  getpost: () => api.get("/job"),
+  getdetail: (job_id) => api.get(`/job/${job_id}`),
 };
 
 export const getUserData = async (token) => {

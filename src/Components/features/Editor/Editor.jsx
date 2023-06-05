@@ -18,20 +18,20 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
 export default function ToastEditor() {
-// 지역 정보 검색
-const [sidos, setSidos] = useState([]);
-const getFindSido = async() => {
-  try {
-    const res = await AuthApi.findsido();
-    const sidoArray = res.data.data.map(item => item.sido)
-    setSidos(sidoArray)
-  } catch (err) {
-    console.log(err);
-  }
-}
-useEffect(() => {
-  getFindSido()
-}, []);
+  // 지역 정보 검색
+  const [sidos, setSidos] = useState([]);
+  const getFindSido = async () => {
+    try {
+      const res = await AuthApi.findsido();
+      const sidoArray = res.data.data.map((item) => item.sido);
+      setSidos(sidoArray);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getFindSido();
+  }, []);
 
   const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
@@ -49,7 +49,6 @@ useEffect(() => {
   const handleAddressChange = (e) => {
     setAddress(e.target.value);
   };
-
 
   // 모집 기한 상시체용 어부
   const [isChecked, setIsChecked] = useState(false);
@@ -79,7 +78,10 @@ useEffect(() => {
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
     const imageName = await uploadImage(blob);
-    callback(process.env.REACT_APP_BACKEND_SERVER_URL+`/download/${imageName}`, "alt text");
+    callback(
+      process.env.REACT_APP_BACKEND_SERVER_URL + `/download/${imageName}`,
+      "alt text"
+    );
     return false;
   };
 
@@ -89,7 +91,7 @@ useEffect(() => {
     formData.append("file", blob);
     try {
       const res = await AuthApi.imgUoload(formData);
-      return res.data.imageName
+      return res.data.imageName;
     } catch (err) {
       console.log(err);
     }
@@ -115,11 +117,11 @@ useEffect(() => {
     try {
       const res = await AuthApi.write(newPost, config);
       // throw new Error("test")
-      console.log(res)
+      console.log(res);
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <StContainer>
