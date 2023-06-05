@@ -130,43 +130,56 @@ export default function ToastEditor() {
   return (
     <StContainer>
       <StLayer>
-        <StLabel>제목:</StLabel>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => titleChangeHandler(e)}
-        />
-        <StLabel>지역:</StLabel>
-        <select value={address} onChange={handleAddressChange}>
-          <option value="">선택해주세요</option>
-          {sidos.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        <StLabel>모집기한:</StLabel>
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => dateChangeHandler(e)}
-          disabled={isChecked}
-        />
-        <StLabel>상시채용 여부</StLabel>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckboxChange}
-        />
-        <StLabel>직군:</StLabel>
-        <select value={selectedJob} onChange={handleJobChange}>
-          <option value="">선택해주세요</option>
-          {jobKeyWord.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <StLabel>
+          제목:
+          <StTitleInput
+            type="text"
+            value={title}
+            onChange={(e) => titleChangeHandler(e)}
+          />
+        </StLabel>
+
+        <StLabel>
+          지역:
+          <StSelect value={address} onChange={handleAddressChange}>
+            <option value="">선택해주세요</option>
+            {sidos.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </StSelect>
+        </StLabel>
+
+        <StLabel>
+          모집기한:
+          <StDateInput
+            type="date"
+            value={endDate}
+            onChange={(e) => dateChangeHandler(e)}
+            disabled={isChecked}
+          />
+        </StLabel>
+
+        <StCheckboxLabel>
+          상시채용 여부:
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+          />
+        </StCheckboxLabel>
+        <StLabel>
+          직군:
+          <StSelect value={selectedJob} onChange={handleJobChange}>
+            <option value="">선택해주세요</option>
+            {jobKeyWord.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </StSelect>
+        </StLabel>
       </StLayer>
       <StEditorWrap>
         <Editor
@@ -248,11 +261,45 @@ const StEditorWrap = styled.div`
 
 const StLabel = styled.label`
   font-weight: bold;
-  margin-bottom: 5px;
+  font-size: large;
+  margin-bottom: 15px;
+  margin-right: 10px;
+`;
+const StLayer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
 `;
 
-const StLayer = styled.div`
-display: flex;
-flex-wrap: wrap;
-flex-direction: row;
+const StTitleInput = styled.input`
+  font-size: 24px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  width: 80%;
+`;
+
+const StSelect = styled.select`
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+  color: #333;
+`;
+
+const StDateInput = styled.input`
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const StCheckboxLabel = styled.label`
+  font-weight: bold;
+  font-size: large;
+  margin-bottom: 15px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
