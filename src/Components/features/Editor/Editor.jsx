@@ -129,43 +129,45 @@ export default function ToastEditor() {
 
   return (
     <StContainer>
-      <label>제목:</label>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => titleChangeHandler(e)}
-      />
-      <label>지역:</label>
-      <select value={address} onChange={handleAddressChange}>
-        <option value="">선택해주세요</option>
-        {sidos.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <label>모집기한:</label>
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => dateChangeHandler(e)}
-        disabled={isChecked}
-      />
-      <label>상시채용 여부</label>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={handleCheckboxChange}
-      />
-      <label>직군:</label>
-      <select value={selectedJob} onChange={handleJobChange}>
-        <option value="">선택해주세요</option>
-        {jobKeyWord.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
+      <StLayer>
+        <StLabel>제목:</StLabel>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => titleChangeHandler(e)}
+        />
+        <StLabel>지역:</StLabel>
+        <select value={address} onChange={handleAddressChange}>
+          <option value="">선택해주세요</option>
+          {sidos.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <StLabel>모집기한:</StLabel>
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => dateChangeHandler(e)}
+          disabled={isChecked}
+        />
+        <StLabel>상시채용 여부</StLabel>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+        />
+        <StLabel>직군:</StLabel>
+        <select value={selectedJob} onChange={handleJobChange}>
+          <option value="">선택해주세요</option>
+          {jobKeyWord.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </StLayer>
       <StEditorWrap>
         <Editor
           initialValue=" "
@@ -242,4 +244,15 @@ const StContainer = styled.div`
 
 const StEditorWrap = styled.div`
   margin-top: 20px;
+`;
+
+const StLabel = styled.label`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const StLayer = styled.div`
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
 `;
