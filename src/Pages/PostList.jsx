@@ -15,7 +15,12 @@ function PostList() {
         const response = await axios.get(
           process.env.REACT_APP_BACKEND_SERVER_URL
         );
-        setPostList(response.data);
+        setPostList(
+          response.data.map((post) => ({
+            ...post,
+            companyName: post.companyName,
+          }))
+        );
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching post list:", error);
@@ -41,14 +46,13 @@ function PostList() {
               <Card key={post.id}>
                 <CardContent>
                   {post.end_date ? (
-                    <p>모집기한: {post.end_date}</p>
+                    <p>{post.end_date}</p> //모집기한
                   ) : (
-                    <p>
-                      상시채용 여부: {post.isChecked ? "상시채용" : "기한 존재"}
-                    </p>
+                    <p>{post.isChecked ? "상시채용" : "기한 존재"}</p> //상시채용 여부, 마감일 표시
                   )}
                   <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
-                  <p>직군: {post.keywords}</p>
+                  <p>{post.companyName}</p>
+                  <p>{post.keywords}</p>
                   <p>{post.address}</p>
                   <StImgBox imageUrl={post.imageURL}></StImgBox>
                 </CardContent>

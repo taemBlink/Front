@@ -10,7 +10,7 @@ function Sidebar({ postId }) {
     const fetchRelatedJobPostings = async () => {
       try {
         const response = await axios.get(
-          `http://example.com/api/posts/${postId}/related-job-postings`
+          `${process.env.REACT_APP_BACKEND_SERVER_URL}/posts/${postId}/related-job-postings`
         ); // Replace with the appropriate API endpoint to fetch related job postings
         setRelatedJobPostings(response.data);
       } catch (error) {
@@ -21,7 +21,7 @@ function Sidebar({ postId }) {
     const fetchCompanyJobPostings = async () => {
       try {
         const response = await axios.get(
-          `http://example.com/api/posts/${postId}/company-job-postings`
+          `${process.env.REACT_APP_BACKEND_SERVER_URL}/posts/${postId}/company-job-postings`
         ); // Replace with the appropriate API endpoint to fetch company job postings
         setCompanyJobPostings(response.data);
         setIsLoading(false);
