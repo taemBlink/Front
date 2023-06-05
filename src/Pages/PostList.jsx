@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout/Layout";
+import { AuthApi } from "../shared/Api";
 
 function PostList() {
   const [postList, setPostList] = useState([]);
@@ -12,10 +13,14 @@ function PostList() {
   useEffect(() => {
     const fetchPostList = async () => {
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_BACKEND_SERVER_URL
+        const response = await AuthApi.getpost();
+        console.log(response);
+        setPostList(
+          response.data.jobs.map((post) => ({
+            ...post,
+            companyName: post.companyName,
+          }))
         );
-        setPostList(response.data);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching post list:", error);
@@ -29,7 +34,7 @@ function PostList() {
   const handlePostClick = (postId) => {
     navigate(`/detail/${postId}`);
   };
-
+  console.log("목록:", postList);
   return (
     <Layout>
       <Container>
@@ -38,18 +43,19 @@ function PostList() {
         ) : (
           <>
             {postList.map((post, index) => (
-              <Card key={post.id}>
+              <Card key={post.job_id}>
                 <CardContent>
                   {post.end_date ? (
-                    <p>모집기한: {post.end_date}</p>
+                    <p>{post.end_date}</p> //모집기한
                   ) : (
-                    <p>
-                      상시채용 여부: {post.isChecked ? "상시채용" : "기한 존재"}
-                    </p>
+                    <p>{post.isChecked ? "상시채용" : "기한 존재"}</p> //상시채용 여부, 마감일 표시
                   )}
-                  <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
+                  <h2 onClick={() => handlePostClick(post.job_id)}>
+                    제목: {post.title}
+                  </h2>
+                  <p>기업명: {post.company}</p>
                   <p>직군: {post.keywords}</p>
-                  <p>{post.address}</p>
+                  <p>주소: {post.address}</p>
                   <StImgBox imageUrl={post.imageURL}></StImgBox>
                 </CardContent>
               </Card>

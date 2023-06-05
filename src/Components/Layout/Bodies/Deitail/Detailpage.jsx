@@ -1,32 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Sidebar from "./Sidebar";
+import { AuthApi } from "../../../../shared/Api";
 
 function Detailpage() {
-  const { postId } = useParams();
+  const { job_id } = useParams();
+  const [content, setContent] = useState("");
+  const processedHtml = React.createElement("div", {
+    dangerouslySetInnerHTML: { __html: content },
+  });
   const [post, setPost] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const fetchPost = async () => {
+    try {
+      const response = await AuthApi.getdetail(job_id);
+      console.log("response:", response);
+      setPost(response.data.job);
+      setContent(response.data.job.content);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_SERVER_URL.replace(
-            ":job_id",
-            postId
-          )}`
-        );
-        setPost(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-        setIsLoading(false);
-      }
-    };
-
     fetchPost();
-  }, [postId]);
+  }, [0]);
 
   return (
     <div className="detail-container">
@@ -36,14 +35,14 @@ function Detailpage() {
         ) : post ? (
           <div>
             <h2>{post.title}</h2>
-            <img src={post.imageURL} alt={post.title} />
-            <p>{post.content}</p>
+
+            {processedHtml}
           </div>
         ) : (
           <p>Post not found</p>
         )}
       </div>
-      <Sidebar postId={postId} />
+      <Sidebar />
     </div>
   );
 }
