@@ -1,24 +1,23 @@
 import React from "react";
 import Layout from "../Components/Layout/Layout";
+import styled from "styled-components";
 
 function Home() {
   return (
     <Layout>
-      <div className="container">
-        <div className="wrapped">
-          <div role="main" className="contents">
-            <section role="search" className="wrap-srch-home">
-              <input
+      <Container>
+        <Wrapped>
+          <Main>
+            <Section>
+              <Input
                 name="keyword"
                 type="search"
                 placeholder="관심있는 내용을 검색해보세요!"
                 autocomplete="off"
                 className="inp-srch"
-              ></input>
-              <button type="button" className="btn-srch">
-                검색
-              </button>
-            </section>
+              ></Input>
+              <Searchbtn type="button" className="btn-srch"></Searchbtn>
+            </Section>
             <div className="home-list">
               <div className="topic-list best">
                 <h2>
@@ -33,40 +32,131 @@ function Home() {
                   </i>
                 </h2>
               </div>
-              <div className="article">
-                <span className="topic">
-                  <a
-                    href="/kr/topics/%EC%95%94%ED%98%B8%ED%99%94%ED%8F%90"
-                    className=""
-                  >
-                    암호화폐
-                  </a>
-                </span>
-
-                <a
-                  href="/kr/post/%EC%97%84%EB%A7%88%EA%B0%80-%EC%82%AC%EC%9C%84-%EA%B5%AC%ED%95%9C%EB%8C%80-CpHsaOpU"
-                  className="tit ico-img"
-                >
-                  엄마가 사위 구한대!!!!!
-                </a>
-                <div className="wrap-info">
-                  <a className="like">
-                    <i className="blind">좋아요</i>17
-                  </a>
-                  <a
-                    href="/kr/post/%EC%97%84%EB%A7%88%EA%B0%80-%EC%82%AC%EC%9C%84-%EA%B5%AC%ED%95%9C%EB%8C%80-CpHsaOpU"
-                    className="cmt"
-                  >
-                    <i className="blind">댓글</i>211
-                  </a>
-                </div>
-              </div>
+              <Display className="article">
+                <Display>
+                  <Topic>암호화폐</Topic>&nbsp; 엄마가 사위 구한대!!!!!
+                </Display>
+                <RightContent>
+                  <Like>
+                    <i className="blind"></i>&nbsp;&nbsp;17
+                  </Like>
+                  &nbsp;&nbsp;
+                  <Comment>
+                    <i className="blind"></i>&nbsp;&nbsp;211
+                  </Comment>
+                </RightContent>
+              </Display>
+              <Display className="article">
+                <Display>
+                  <Topic>암호화폐</Topic>&nbsp; 엄마가 사위 구한대!!!!!
+                </Display>
+                <RightContent>
+                  <Like>
+                    <i className="blind"></i>&nbsp;&nbsp;17
+                  </Like>
+                  &nbsp;&nbsp;
+                  <Comment>
+                    <i className="blind"></i>&nbsp;&nbsp;211
+                  </Comment>
+                </RightContent>
+              </Display>
             </div>
-          </div>
-        </div>
-      </div>
+          </Main>
+        </Wrapped>
+      </Container>
     </Layout>
   );
 }
-
 export default Home;
+
+const Container = styled.div`
+  display: block;
+`;
+
+const Wrapped = styled.div`
+  flex-direction: row;
+  border-top: none;
+  /* padding: 40px 20px 0; */
+  margin-left: 130px;
+`;
+
+const Main = styled.div`
+  width: 736px;
+  min-height: 800px;
+`;
+
+const Section = styled.div`
+  /* position: relative;
+  display: block; */
+  background: rgba(0, 0, 0, 0.05);
+  margin: 10px;
+  padding: 5px;
+`;
+
+const Input = styled.input`
+  display: block;
+  width: 600px;
+  height: 50px;
+  padding: 0 10px 0 62px;
+  border: 2px solid #222;
+  border-radius: 30px;
+  font-size: 18px;
+  box-sizing: border-box;
+  -webkit-rtl-ordering: logical;
+  cursor: text;
+  background-color: field;
+  /* vertical-align: top; */
+`;
+
+const Searchbtn = styled.button`
+  position: absolute;
+  top: 27.5%;
+  left: 11%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: url(https://static.teamblind.com/img/www_kr/sp-kr.png) no-repeat;
+  background-size: 600px 900px;
+  background-position: -10px -350px;
+  content: "";
+  overflow: visible;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+`;
+
+const Topic = styled.div`
+  display: block;
+  height: 20px;
+  width: 50px;
+
+  border: 1px solid #eee;
+  /* vertical-align: middle; */
+  text-align: center;
+  font-size: 12px;
+`;
+
+const Display = styled.div`
+  display: flex;
+`;
+
+const Like = styled.button`
+  background: url(https://static.teamblind.com/img/www_kr/sp-kr.png) no-repeat;
+  background-size: 600px 900px;
+  background-position: -62px -600px;
+  border: 0;
+  background-color: transparent;
+`;
+
+const Comment = styled.button`
+  background: url(https://static.teamblind.com/img/www_kr/sp-kr.png) no-repeat;
+  background-size: 600px 900px;
+  background-position: -36px -600px;
+  border: 0;
+  background-color: transparent;
+`;
+
+const RightContent = styled.div`
+  margin-left: 300px;
+`;
