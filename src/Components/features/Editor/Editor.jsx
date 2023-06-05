@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { AuthApi } from "../../../shared/Api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 // Toast 에디터
@@ -18,20 +18,21 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
 export default function ToastEditor() {
-// 지역 정보 검색
-const [sidos, setSidos] = useState([]);
-const getFindSido = async() => {
-  try {
-    const res = await AuthApi.findsido();
-    const sidoArray = res.data.data.map(item => item.sido)
-    setSidos(sidoArray)
-  } catch (err) {
-    console.log(err);
-  }
-}
-useEffect(() => {
-  getFindSido()
-}, []);
+  const navigate = useNavigate();
+  // 지역 정보 검색
+  const [sidos, setSidos] = useState([]);
+  const getFindSido = async () => {
+    try {
+      const res = await AuthApi.findsido();
+      const sidoArray = res.data.data.map((item) => item.sido);
+      setSidos(sidoArray);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    getFindSido();
+  }, []);
 
   const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
@@ -50,7 +51,6 @@ useEffect(() => {
     setAddress(e.target.value);
   };
 
-
   // 모집 기한 상시체용 어부
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
@@ -67,7 +67,6 @@ useEffect(() => {
 
   // 본문을 저장
   const [content, setContent] = useState("");
-
   const editorRef = useRef();
 
   const onChange = () => {
@@ -79,17 +78,20 @@ useEffect(() => {
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
     const imageName = await uploadImage(blob);
-    callback(process.env.REACT_APP_BACKEND_SERVER_URL+`/download/${imageName}`, "alt text");
+    callback(
+      process.env.REACT_APP_BACKEND_SERVER_URL + `/download/${imageName}`,
+      "alt text"
+    );
     return false;
   };
 
-  //S3 서버에 데이터 보내고 URL 받기
+  // 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
     const formData = new FormData();
     formData.append("file", blob);
     try {
       const res = await AuthApi.imgUoload(formData);
-      return res.data.imageName
+      return res.data.imageName;
     } catch (err) {
       console.log(err);
     }
@@ -112,14 +114,18 @@ useEffect(() => {
   };
 
   const onSubmiltHandler = async () => {
+    if (!title || !address || !selectedJob) {
+      alert("필수 항목을 입력해 주세요.");
+      return;
+    }
     try {
       const res = await AuthApi.write(newPost, config);
-      // throw new Error("test")
-      console.log(res)
+      alert(res.data.massage);
+      navigate("/");
     } catch (err) {
-      console.log(err);
+      alert(err.response.data.errorMessage);
     }
-  }
+  };
 
   return (
     <StContainer>
