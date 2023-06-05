@@ -120,7 +120,7 @@ export default function ToastEditor() {
     }
     try {
       const res = await AuthApi.write(newPost, config);
-      alert(res.data.massage);
+      alert("글 작성 성공");
       navigate("/");
     } catch (err) {
       alert(err.response.data.errorMessage);
