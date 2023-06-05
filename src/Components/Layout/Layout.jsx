@@ -3,7 +3,6 @@ import Header from "./Headers/Header";
 import Blinkhub from "./Blinkhub/Blinkhub";
 import Body from "./Bodies/Body";
 import Footer from "./Footers/Footer";
-import Navibar from "./Navigationbar/Navibar";
 
 function Layout({ children }) {
   return (
@@ -11,7 +10,6 @@ function Layout({ children }) {
       <Blinkhub />
       <StMain>
         <Header />
-        <Navibar />
         <Body className="content">{children}</Body>
         <Footer />
       </StMain>
@@ -28,4 +26,4 @@ const StLayoutBox = styled.div`
 
 const StMain = styled.main`
   margin-top: 40px;
-`
+`;

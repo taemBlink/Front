@@ -1,126 +1,308 @@
-import { useDispatch, useSelector } from "react-redux";
-import { set } from "../../redux/modules/userInfo";
-import { useMutation } from "react-query";
-import { signUp } from "../shared/Api";
-import React from "react";
-function SignUp({ isOpen, closeModal }) {
-  const userInfo = useSelector((state) => state.userInfo);
-  const dispatch = useDispatch();
-  const setUserInfo = ({ target }) => {
-    const { name, value } = target;
-    dispatch(
-      set({
-        name,
-        value,
-      })
-    );
-  };
-  const mutation = useMutation(signUp, {
-    onSuccess: () => {
-      console.log("Success");
-    },
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { AuthApi } from "../shared/Api";
+
+// 이메일 정규식
+const emailRegex =
+  /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+
+// 이름 정규식
+const nameRegex = /^[가-힣]{2,4}$/;
+// 한글 이름 2~4자 이내
+
+// 닉네임 정규식
+// const nicknameRegex = /^[A-Za-z0-9]{3,}$/;
+
+// 비밀번호 정규식
+const passwordRegex = /^.{4,}$/;
+
+// 오류 메세지
+const alertMessage = {
+  nameErr: "이름 규칙에 어긋납니다! (한글을 사용하여 2글자 이상)",
+  // nickErr: "닉네임 규칙에 어긋납니다! (영문과 숫자를 사용하여 3글자 이상)",
+  pwErr: "비밀번호 규칙에 어긋납니다!!(4글자 이상)",
+  pwMachErr: "패스워드가 불일치합니다.",
+  signinUpComplete: "회원가입에 성공했습니다.",
+  signinUpFail: "어라? 뭔가 문제가 생긴 것 같아요!",
+};
+
+function Signup() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState({
+    value: "",
+    err: null,
   });
+  // const [korName, setkorName] = useState({
+  //   value: "",
+  //   err: null,
+  // });
+
+  const [name, setName] = useState({
+    value: "",
+    err: null,
+  });
+
+  const [companyName, setCompanyName] = useState({
+    value: "",
+    err: null,
+  });
+
+  // const [companyName, setCompanyName] = useState({
+  //   value: "",
+  //   err: null,
+  // });
+
+  const [password, setPassword] = useState({
+    value: "",
+    err: null,
+  });
+  const [confirmPassword, setConfirmPassword] = useState({
+    value: "",
+    err: null,
+  });
+
+  const [userType, setUserType] = useState("regular"); // Default user type is regular
+
+  const onEmailChangeHandler = (event) => {
+    const inputEmail = event.target.value;
+    setEmail((prevEmail) => ({
+      ...prevEmail,
+      value: inputEmail,
+    }));
+  };
+
+  // const onkorNameChangeHandler = (event) => {
+  //   const inputkorName = event.target.value;
+  //   setkorName((prevkorName) => ({
+  //     ...prevkorName,
+  //     value: inputkorName,
+  //   }));
+  // };
+
+  const onNameChangeHandler = (event) => {
+    const inputName = event.target.value;
+    setName((prevName) => ({
+      ...prevName,
+      value: inputName,
+    }));
+  };
+
+  const onCompanyNameChangeHandler = (event) => {
+    const inputCompanyName = event.target.value;
+    setCompanyName((prevCompanyName) => ({
+      ...prevCompanyName,
+      value: inputCompanyName,
+    }));
+  };
+
+  const onPasswordChangeHandler = (event) => {
+    const inputPassword = event.target.value;
+    setPassword((prevPassword) => ({
+      ...prevPassword,
+      value: inputPassword,
+    }));
+  };
+
+  const onConfirmPasswordChangeHandler = (event) => {
+    const inputConfirmPassword = event.target.value;
+    setConfirmPassword((prevConfimPw) => ({
+      ...prevConfimPw,
+      value: inputConfirmPassword,
+    }));
+  };
+
+  const verifySiginUpData = () => {
+    // 유효성 검사 결과 저장
+    const verifiedEmail = emailRegex.test(email.value);
+    // const verifiedkorname = kornameRegex.test(korName.value);
+    const verifiedname = nameRegex.test(name.value);
+    const verifiedPassword = passwordRegex.test(password.value);
+    const verifiedConfirmPassword = password.value === confirmPassword.value;
+
+    setEmail((prevEmail) => ({
+      ...prevEmail,
+      err: !verifiedEmail,
+    }));
+
+    // setkorName((prevkorName) => ({
+    //   ...prevkorName,
+    //   err: !verifiedkorname,
+    // }));
+
+    setName((prevName) => ({
+      ...prevName,
+      err: !verifiedname,
+    }));
+    // 비밀번호 유효성 검사
+    setPassword((prevPassword) => ({
+      ...prevPassword,
+      err: !verifiedPassword,
+    }));
+    // 비밀번호 재입력 일치 여부 검사
+    setConfirmPassword((prevConfimPw) => ({
+      ...prevConfimPw,
+      err: !verifiedConfirmPassword,
+    }));
+    return !verifiedname || !verifiedPassword || !verifiedConfirmPassword
+      ? false
+      : true;
+  };
+  const onSubmitHandler = async () => {
+    const signUpVerify = verifySiginUpData();
+    if (signUpVerify) {
+      try {
+        const payload = {
+          email: email.value,
+          password: password.value,
+          name: name.value,
+        };
+
+        if (userType === "regular") {
+          payload.user_type = "일반회원";
+        } else if (userType === "hr") {
+          payload.user_type = "인사담당자";
+          payload.companyName = companyName.value;
+        }
+
+        const res = await AuthApi.signup(payload);
+        alert(res.message);
+        navigate("/");
+      } catch (err) {
+        alert(err.errorMessage);
+      }
+    } else {
+      return;
+    }
+  };
+
   return (
-    <div
-      style={{
-        display: isOpen ? "block" : "none",
-      }}
-    >
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          backgroundColor: "rgba(0, 0, 0, 0.35)",
-        }}
-      ></div>
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 500,
-          maxWidth: "100%",
-          maxHeight: "90%",
-          overflowY: "auto",
-          backgroundColor: "white",
-        }}
-      >
-        <div>
-          <h2>회원가입</h2>
-          <div>
-            <label>이메일</label>
-            <br />
-            <input
-              name="email"
-              onChange={setUserInfo}
-              value={userInfo.email}
-              placeholder="test@email.com"
-            />
-          </div>
-          <div>
-            <label>이름</label>
-            <br />
-            <input
-              name="nickName"
-              onChange={setUserInfo}
-              value={userInfo.nickName}
-              placeholder="이름을 입력해주세요"
-            ></input>
-          </div>
-          <div>
-            <label>나이</label>
-            <br />
-            <input
-              name="age"
-              onChange={setUserInfo}
-              value={userInfo.age}
-              placeholder="숫자만 입력해주세요"
-            ></input>
-          </div>
-          <div>
-            <label>비밀번호</label>
-            <br />
-            <input
-              name="password"
-              onChange={setUserInfo}
-              value={userInfo.password}
-              placeholder="비밀번호"
-              type="password"
-            ></input>
-            <br />
-            <input
-              name="passwordConfirm"
-              onChange={setUserInfo}
-              value={userInfo.passwordConfirm}
-              placeholder="비밀번호 확인"
-              type="password"
-            ></input>
-            {userInfo.password.length === 0 ? (
-              ""
-            ) : userInfo.passwordConfirm.length === 0 ? (
-              ""
-            ) : userInfo.passwordConfirm === userInfo.password ? (
-              ""
-            ) : (
-              <p>위와 동일한 비밀번호를 입력하세요</p>
-            )}
-          </div>
-        </div>
-        <button
-          onClick={() => {
-            console.log(userInfo);
-            mutation.mutate(userInfo);
-          }}
-        >
+    <StSignupContainer>
+      <h1>회원가입</h1>
+
+      <label>
+        사용자 유형 :&nbsp;
+        <select value={userType} onChange={(e) => setUserType(e.target.value)}>
+          <option value="regular">일반회원</option>
+          <option value="hr">인사담당자</option>
+        </select>
+      </label>
+
+      <label>
+        이메일 :
+        <StAlertBox>{email.err ? alertMessage.emailErr : null}</StAlertBox>
+      </label>
+      <input type="text" placeholder="e-mail" onChange={onEmailChangeHandler} />
+      <label>
+        이름 :<StAlertBox>{name.err ? alertMessage.nameErr : null}</StAlertBox>
+      </label>
+      <input type="text" placeholder="name" onChange={onNameChangeHandler} />
+
+      {userType === "hr" && (
+        <>
+          <label>
+            회사명 :
+            <StAlertBox>
+              {/* {companyName.err ? alertMessage.nickErr : null} */}
+            </StAlertBox>
+          </label>
+          <input
+            type="text"
+            placeholder="My Company Name"
+            onChange={onCompanyNameChangeHandler}
+          />
+        </>
+      )}
+
+      <label>
+        비밀번호 :
+        <StAlertBox>{password.err ? alertMessage.pwErr : null}</StAlertBox>
+      </label>
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={onPasswordChangeHandler}
+      />
+      <label>
+        비밀번호 재입력 :
+        <StAlertBox>
+          {confirmPassword.err ? alertMessage.pwMachErr : null}
+        </StAlertBox>
+      </label>
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        onChange={onConfirmPasswordChangeHandler}
+      />
+      <div>
+        <StBtnSubmit backgroundcolor="#7fccde" onClick={onSubmitHandler}>
           회원가입
-        </button>
-        <button onClick={closeModal}>Close</button>
+        </StBtnSubmit>
+        <Link to={"/"}>
+          <StBtnCancel backgroundcolor="#fa5a5a">취소</StBtnCancel>
+        </Link>
       </div>
-    </div>
+    </StSignupContainer>
   );
 }
-export default SignUp;
+export default Signup;
+
+const StSignupContainer = styled.div`
+  max-width: 500px;
+  margin: 15px auto;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-direction: column;
+  border: 3px solid black;
+  /* Modal styles */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+`;
+// const StBtn = styled.button`
+//   margin-right: 8px;
+//   background-color: #da3238;
+//   border-color: #da3238;
+//   color: white;
+//   font-size: 13px;
+//   font-weight: bold;
+//   border: none;
+//   box-shadow: none;
+//   border-radius: 0;
+//   width: 90px;
+//   height: 45px;
+//   &:active {
+//     filter: brightness(0.9);
+//   }
+// `;
+
+const StBtnSubmit = styled.button`
+  margin-right: 8px;
+  background-color: #da3238;
+  border-color: #da3238;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 90px;
+  height: 45px;
+  &:active {
+    filter: brightness(0.9);
+  }
+`;
+
+const StBtnCancel = styled(StBtnSubmit)`
+  margin-right: 8px;
+  background-color: white;
+  color: #222;
+  border: 2px solid #d4d4d4;
+`;
+
+const StAlertBox = styled.div`
+  color: tomato;
+  font-weight: bold;
+`;

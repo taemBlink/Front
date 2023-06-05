@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-function Body({children}) {
-  return (
-    <>{children}</>
-  )
+function Body({ children }) {
+  return <div className="content">{children}</div>;
 }
 
-export default Body
+export default Body;
