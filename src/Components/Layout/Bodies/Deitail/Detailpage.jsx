@@ -12,8 +12,11 @@ function Detailpage() {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://api.ysizuku.com/api/posts/${postId}`
-        ); // Replace with the appropriate API endpoint to fetch a single post
+          `${process.env.REACT_APP_BACKEND_SERVER_URL.replace(
+            ":job_id",
+            postId
+          )}`
+        );
         setPost(response.data);
         setIsLoading(false);
       } catch (error) {

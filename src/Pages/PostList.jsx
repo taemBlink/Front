@@ -12,7 +12,9 @@ function PostList() {
   useEffect(() => {
     const fetchPostList = async () => {
       try {
-        const response = await axios.get("http://54.180.142.54/job"); // 백엔드 API의 주소로 변경해야 합니다.
+        const response = await axios.get(
+          process.env.REACT_APP_BACKEND_SERVER_URL
+        );
         setPostList(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -25,7 +27,7 @@ function PostList() {
   }, []);
 
   const handlePostClick = (postId) => {
-    navigate(`/detail/${postId}`); // 상세 페이지로 이동하도록 경로를 지정합니다.
+    navigate(`/detail/${postId}`);
   };
 
   return (
@@ -36,9 +38,18 @@ function PostList() {
         ) : (
           <>
             {postList.map((post, index) => (
-              <Card key={post.id} onClick={() => handlePostClick(post.id)}>
+              <Card key={post.id}>
                 <CardContent>
-                  <h2>{post.title}</h2>
+                  {post.end_date ? (
+                    <p>모집기한: {post.end_date}</p>
+                  ) : (
+                    <p>
+                      상시채용 여부: {post.isChecked ? "상시채용" : "기한 존재"}
+                    </p>
+                  )}
+                  <h2 onClick={() => handlePostClick(post.id)}>{post.title}</h2>
+                  <p>직군: {post.keywords}</p>
+                  <p>{post.address}</p>
                   <StImgBox imageUrl={post.imageURL}></StImgBox>
                 </CardContent>
               </Card>

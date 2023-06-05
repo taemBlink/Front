@@ -2,9 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AuthApi } from "../shared/Api";
-import axios from "axios";
-import KakaoLogin from "react-kakao-login";
-import { getUserData } from "../shared/Api";
 
 function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
   const [email, setEmail] = useState({
@@ -41,9 +38,6 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
           password: password.value,
         });
         console.log(res);
-        // 사용자 정보 요청
-        // const userData = await getUserData(res.data.token);
-        // console.log(userData); // 받아온 사용자 정보 활용 예시
 
         const expirationDate = new Date();
         const setCookie = `token ${res.token}`;
@@ -52,77 +46,16 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
           setCookie
         )}; expires=${expirationDate.toUTCString()}; path=/`;
 
-        // if(!res || !res.token) {
-        //   console.log('res : ' + res);
-        //   console.log('res.token : ' + res.token);
-        //   return;
-        // }
-
-        // 세선 스토리지에 이메일 저장
-        // sessionStorage.setItem(
-        //   "email",
-        //   JSON.stringify(parseJwt(res.token).email)
-        // );
-        // sessionStorage.setItem("isSignIn", JSON.stringify(true));
-        // alert("로그인에 성공했습니다.");
-
         closeModal();
         handleLoginSuccess();
         // 받아온 사용자 정보 활용 예시
       } catch (err) {
         alert(err.errorMessage || err.message);
       }
-
-      // axios
-      //     .post(
-      //       "http://miniproject.ap-northeast-2.elasticbeanstalk.com/signin", // 미리 약속한 주소
-      //       { Email:Email.value, password:password.value }, // 서버가 필요로 하는 데이터를 넘겨주고,
-      //       { headers: {} } // 누가 요청했는 지 알려줍니다. (config에서 해요!)
-      //     )
-      //     .then(function (response) {
-      //       console.log(response);
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error);
-      //     });
     } else {
       alert("이메일 또는 비밀번호가 입력되지 않았습니다.");
       return;
     }
-  };
-
-  const loginWithKakao = () => {
-    const REDIRECT_URI = `${process.env.REACT_APP_KAKAO_REDIRECT_URL}`;
-    const CLIENT_ID = `${process.env.REACT_APP_RESTAPI_KAKAO_APP_KEY}`;
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-    // const KAKAO_AUTH_URL = "http://54.180.142.54/kakao";
-    window.location.href = KAKAO_AUTH_URL;
-  };
-  const kakaoClientId = `${process.env.REACT_APP_CLIENT_ID}`;
-
-  const kakaoOnSuccess = async (data) => {
-    console.log(data);
-    const idToken = data.response.id_token; // 인가코드 백엔드로 전달
-
-    // Make an Axios request
-    try {
-      const response = await axios.post("http://react.ysizuku.com/kakao", {
-        idToken: idToken,
-      });
-      console.log(response.data); // Handle the response from the backend
-
-      // 로그인 성공 시 상태 업데이트
-      setIsLoggedin(true);
-
-      // 홈 화면으로 이동
-      closeModal();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const kakaoOnFailure = (error) => {
-    console.log(error);
   };
 
   const handleCloseClick = (e) => {
@@ -179,8 +112,12 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
             회원가입
           </StBtnCancel>
         </Link>
-
-        <KakaoLogin
+        <div className="App">
+          <a href="http://api.ysizuku.com/kakao">
+            <img src={kakaoLoginButtonImgPath} />{" "}
+          </a>
+        </div>
+        {/* <KakaoLogin
           onClick={() => loginWithKakao()}
           token={kakaoClientId}
           onSuccess={kakaoOnSuccess}
@@ -192,7 +129,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
               onClick={onClick}
             />
           )}
-        />
+        /> */}
         {/* <StBtn backgroundcolor="#82c8a0" type="button" onClick={closeModal}>
           닫기
         </StBtn> */}
