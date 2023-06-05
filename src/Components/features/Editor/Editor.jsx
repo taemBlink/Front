@@ -1,4 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { AuthApi } from "../../../shared/Api";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 // Toast 에디터
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -7,22 +11,53 @@ import { Editor } from "@toast-ui/react-editor";
 import "prismjs/themes/prism.css";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all.js";
-
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
-
 import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import styled from "styled-components";
+
+const jobKeyWord = ["엔지니어링", "교육", "개발", "HR·경영지원"];
 
 export default function ToastEditor() {
+// 지역 정보 검색
+const [sidos, setSidos] = useState([]);
+const getFindSido = async() => {
+  try {
+    const res = await AuthApi.findsido();
+    const sidoArray = res.data.data.map(item => item.sido)
+    setSidos(sidoArray)
+  } catch (err) {
+    console.log(err);
+  }
+}
+useEffect(() => {
+  getFindSido()
+}, []);
+
   const [title, setTitle] = useState("");
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
   };
 
+  // 채용공고 마감일 지정
   const [endDate, setEndDate] = useState("");
   const dateChangeHandler = (e) => {
     setEndDate(e.target.value);
+  };
+
+  // 지역값 저장
+  const [address, setAddress] = useState("");
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+
+  // 모집 기한 상시체용 어부
+  const [isChecked, setIsChecked] = useState(false);
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+    if (isChecked) {
+      setEndDate(""); // 모집 기한이 null일 경우 상시체용으로 처리
+    }
   };
 
   const [selectedJob, setSelectedJop] = useState("");
@@ -30,24 +65,61 @@ export default function ToastEditor() {
     setSelectedJop(e.target.value);
   };
 
+  // 본문을 저장
+  const [content, setContent] = useState("");
+
   const editorRef = useRef();
 
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
-    console.log(data);
+    setContent(data);
+    console.log(content);
   };
 
   // 파일 URL을 받아 글에 첨부하기
   const onUploadImage = async (blob, callback) => {
-    const url = await uploadImage(blob);
-    callback(url, "alt text");
+    const imageName = await uploadImage(blob);
+    callback(process.env.REACT_APP_BACKEND_SERVER_URL+`/download/${imageName}`, "alt text");
     return false;
   };
 
   //S3 서버에 데이터 보내고 URL 받기
   const uploadImage = async (blob) => {
-    return "URL"
+    const formData = new FormData();
+    formData.append("file", blob);
+    try {
+      const res = await AuthApi.imgUoload(formData);
+      return res.data.imageName
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  const newPost = {
+    title: title,
+    content: content,
+    keywords: selectedJob,
+    end_date: endDate,
+    address: address,
+  };
+
+  const [cookies] = useCookies(["authorization"]);
+  const config = {
+    headers: {
+      // 쿠키를 헤더에 추가
+      authorization: cookies.authorization,
+    },
+  };
+
+  const onSubmiltHandler = async () => {
+    try {
+      const res = await AuthApi.write(newPost, config);
+      // throw new Error("test")
+      console.log(res)
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <StContainer>
@@ -58,20 +130,35 @@ export default function ToastEditor() {
         onChange={(e) => titleChangeHandler(e)}
       />
       <label>지역:</label>
-      <input />
+      <select value={address} onChange={handleAddressChange}>
+        <option value="">선택해주세요</option>
+        {sidos.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <label>모집기한:</label>
       <input
         type="date"
         value={endDate}
         onChange={(e) => dateChangeHandler(e)}
+        disabled={isChecked}
+      />
+      <label>상시채용 여부</label>
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleCheckboxChange}
       />
       <label>직군:</label>
       <select value={selectedJob} onChange={handleJobChange}>
         <option value="">선택해주세요</option>
-        <option value="엔지니어링">엔지니어링</option>
-        <option value="교육">교육</option>
-        <option value="개발">개발</option>
-        <option value="HR·경영지원">HR·경영지원</option>
+        {jobKeyWord.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
       </select>
       <StEditorWrap>
         <Editor
@@ -79,7 +166,7 @@ export default function ToastEditor() {
           placeholder="내용을 입력해주세요."
           previewStyle="vertical" // 미리보기 스타일 지정
           height="700px" // 에디터 창 높이
-          initialEditType="markdown" // 초기 입력모드 설정(디폴트 markdown)
+          initialEditType="WYSIWYG" // 초기 입력모드 설정(디폴트 markdown)
           onChange={onChange}
           toolbarItems={[
             // 툴바 옵션 설정
@@ -98,8 +185,10 @@ export default function ToastEditor() {
         />
       </StEditorWrap>
       <StBtnBox>
-        <StBtnSubmit>저장</StBtnSubmit>
-        <StBtnCancel>취소</StBtnCancel>
+        <StBtnSubmit onClick={onSubmiltHandler}>저장</StBtnSubmit>
+        <Link to="/">
+          <StBtnCancel>취소</StBtnCancel>
+        </Link>
       </StBtnBox>
     </StContainer>
   );
