@@ -90,7 +90,7 @@ export default function ToastEditor() {
     const formData = new FormData();
     formData.append("file", blob);
     try {
-      const res = await AuthApi.imgUoload(formData);
+      const res = await AuthApi.imgUpload(formData);
       return res.data.imageName;
     } catch (err) {
       console.log(err);
