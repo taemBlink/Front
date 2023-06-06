@@ -1,13 +1,21 @@
+import React from "react";
 import styled from "styled-components";
 
-function Navibar() {
+function Navibar({ onFilterByKeyword }) {
+  const handleNavClick = (keyword) => {
+    onFilterByKeyword(keyword);
+  };
+
   return (
     <NavContainer>
-      <NavLink href="#home">채용 전체</NavLink>
-      <NavLink href="#link">엔지니어링</NavLink>
-      <NavLink href="#link">교육</NavLink>
-      <NavLink href="#link">디자인</NavLink>
-      <NavLink href="#link">개발</NavLink>
+      <NavLink onClick={() => handleNavClick("")}>채용 전체</NavLink>
+      <NavLink onClick={() => handleNavClick("엔지니어링")}>엔지니어링</NavLink>
+      <NavLink onClick={() => handleNavClick("교육")}>교육</NavLink>
+      <NavLink onClick={() => handleNavClick("디자인")}>디자인</NavLink>
+      <NavLink onClick={() => handleNavClick("개발")}>개발</NavLink>
+      <NavLink onClick={() => handleNavClick("HR·경영지원")}>
+        HR·경영지원
+      </NavLink>
     </NavContainer>
   );
 }
@@ -28,6 +36,8 @@ const NavContainer = styled.div`
 const NavLink = styled.div`
   font-size: 15px;
   color: #94969b;
+  cursor: pointer;
+
   &:hover {
     color: #282828;
   }

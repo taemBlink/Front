@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "../Components/Layout/Layout";
 import { AuthApi } from "../shared/Api";
 import Navibar from "../Components/Layout/Navigationbar/Navibar";
@@ -10,6 +10,8 @@ function PostList() {
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const keyword = new URLSearchParams(location.search).get("keyword");
 
   useEffect(() => {
     const fetchPostList = async () => {
@@ -32,10 +34,17 @@ function PostList() {
     fetchPostList();
   }, []);
 
+  useEffect(() => {
+    const filteredList = postList.filter((post) =>
+      keyword ? post.keywords.includes(keyword) : true
+    );
+    setPostList(filteredList);
+  }, [keyword]);
+
   const handlePostClick = (job_id) => {
     navigate(`/job/${job_id}`);
   };
-  // console.log("목록:", postList);
+
   const daysRemaining = (endDate) => {
     const today = moment().startOf("day");
     const end = moment(endDate, "YYYY-MM-DD").startOf("day");
@@ -46,7 +55,11 @@ function PostList() {
 
   return (
     <Layout>
-      <Navibar />
+      <Navibar
+        onFilterByKeyword={(keyword) =>
+          navigate(`?keyword=${encodeURIComponent(keyword)}`)
+        }
+      />
       <GridDiv>
         {isLoading ? (
           <p>Loading...</p>
@@ -68,7 +81,7 @@ function PostList() {
                     {post.title}
                   </h2>
                   <p>기업명: {post.company}</p>
-                  {/* <p>직군: {post.keywords}</p> */}
+                  <p>직군: {post.keywords}</p>
                   <p>주소: {post.address}</p>
                 </CardContent>
                 <StImgBox imageUrl={post.imageURL}></StImgBox>
