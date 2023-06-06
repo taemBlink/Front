@@ -61,6 +61,7 @@ function Detailpage() {
               <StAdressBox>{post.address}</StAdressBox>
             </StCompanyInfoBox>
             <StContentData>{processedHtml}</StContentData>
+            <StSubmitBtn>지원하기</StSubmitBtn>
           </StContentBox>
         ) : (
           <p>Post not found</p>
@@ -143,4 +144,21 @@ const StKeywordBox = styled.div`
 
 const StContentData = styled.div`
   overflow: auto;
+`;
+
+const StSubmitBtn = styled.button`
+margin: 0 auto;
+background-color: #da3238;
+border-color: #da3238;
+color: white;
+font-size: 30px;
+font-weight: bold;
+border: none;
+box-shadow: none;
+border-radius: 0;
+width: 80%;
+height: 70px;
+&:active {
+  filter: brightness(0.9);
+}
 `;
