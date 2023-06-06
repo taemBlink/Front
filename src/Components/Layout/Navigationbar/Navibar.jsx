@@ -11,7 +11,6 @@ function Navibar({ onFilterByKeyword }) {
       <NavLink onClick={() => handleNavClick("")}>채용 전체</NavLink>
       <NavLink onClick={() => handleNavClick("엔지니어링")}>엔지니어링</NavLink>
       <NavLink onClick={() => handleNavClick("교육")}>교육</NavLink>
-      <NavLink onClick={() => handleNavClick("디자인")}>디자인</NavLink>
       <NavLink onClick={() => handleNavClick("개발")}>개발</NavLink>
       <NavLink onClick={() => handleNavClick("HR·경영지원")}>
         HR·경영지원
