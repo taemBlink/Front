@@ -11,7 +11,7 @@ function PostList() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const keyword = new URLSearchParams(location.search).get("keyword");
+  const keywords = new URLSearchParams(location.search).get("keywords");
 
   useEffect(() => {
     const fetchPostList = async () => {
@@ -36,10 +36,10 @@ function PostList() {
 
   useEffect(() => {
     const filteredList = postList.filter((post) =>
-      keyword ? post.keywords.includes(keyword) : true
+      keywords ? post.keywords.includes(keywords) : true
     );
     setPostList(filteredList);
-  }, [keyword]);
+  }, [keywords]);
 
   const handlePostClick = (job_id) => {
     navigate(`/job/${job_id}`);
@@ -56,8 +56,8 @@ function PostList() {
   return (
     <Layout>
       <Navibar
-        onFilterByKeyword={(keyword) =>
-          navigate(`?keyword=${encodeURIComponent(keyword)}`)
+        onFilterByKeyword={(keywords) =>
+          navigate(`?keywords=${encodeURIComponent(keywords)}`)
         }
       />
       <GridDiv>
@@ -81,7 +81,7 @@ function PostList() {
                     {post.title}
                   </h2>
                   <p>기업명: {post.company}</p>
-                  <p>직군: {post.keywords}</p>
+                  {/* <p>직군: {post.keywords}</p> */}
                   <p>주소: {post.address}</p>
                 </CardContent>
                 <StImgBox imageUrl={post.imageURL}></StImgBox>
