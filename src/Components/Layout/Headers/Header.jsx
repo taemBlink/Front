@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Signin from "../../../Pages/Signin";
 import { createPortal } from "react-dom";
-import { AuthApi } from "../../../shared/Api";
+import { useCookies } from "react-cookie";
 
 function Header() {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +17,6 @@ function Header() {
 
   const handleLogoutClick = () => {
     setIsLoggedin(false);
-    localStorage.removeItem("token"); // 로그아웃 시 로컬 스토리지의 토큰 제거
   };
 
   const closeModal = () => {
@@ -26,32 +25,16 @@ function Header() {
 
   const handleLoginSuccess = (token) => {
     setIsLoggedin(true);
-    localStorage.setItem("token", token); // 로그인 성공 시 토큰을 로컬 스토리지에 저장
     closeModal();
   };
 
+  const [cookies] = useCookies();
+
   useEffect(() => {
-    const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
-
-    if (token) {
-      // 토큰이 존재하면 로그인 상태로 설정
+    if (cookies.authorization) {
       setIsLoggedin(true);
-    }
-
-    // 로그인 상태와 토큰이 모두 있는 경우에만 사용자 데이터 호출
-    if (isLoggedin && token) {
-      const fetchUserData = async () => {
-        try {
-          const res = await AuthApi.getUserData(token);
-          setUserType(res.userType);
-        } catch (error) {
-          console.error(
-            "사용자 정보를 가져오는 중 오류가 발생했습니다.",
-            error
-          );
-        }
-      };
-      fetchUserData();
+    } else {
+      setIsLoggedin(false);
     }
   }, [isLoggedin]);
 
@@ -71,12 +54,22 @@ function Header() {
           <StMainBtn>채용 공고</StMainBtn>
         </StLink>
       </StSpaceDiv>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+      />
       <div
         style={{ display: "flex", marginLeft: "auto", alignItems: "center" }}
       >
-        <StJoinTeamBtn>팀블링크 채용</StJoinTeamBtn>&nbsp;
+        <StJoinTeamBtn>
+          <span class="material-symbols-outlined">handshake</span>
+          <span>팀블링크 채용</span>
+          <span class="material-symbols-outlined">chevron_right</span>
+        </StJoinTeamBtn>
       </div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <div
+        style={{ display: "flex", alignItems: "center", marginRight: "100px" }}
+      >
         <Link to={"/posting"}>
           {userType !== "regular" && ( // userType이 "regular"이 아닐 때에만 글쓰기 버튼을 표시합니다.
             <StBtnPosting>글쓰기</StBtnPosting>
@@ -112,7 +105,7 @@ const StLink = styled(Link)`
   text-decoration: none;
 `;
 const StHeader = styled.div`
-  width: 1200px;
+  width: 100%;
   padding: 10px;
   margin: 60px auto;
   display: flex;
@@ -121,6 +114,7 @@ const StHeader = styled.div`
   border-bottom: 2px solid #222;
 `;
 const StSpaceDiv = styled.div`
+  margin-left: 150px;
   width: 350px;
   display: flex;
   flex-wrap: wrap;
@@ -175,6 +169,11 @@ const StJoinTeamBtn = styled.span`
   cursor: pointer;
   &:active {
     filter: brightness(0.9);
+  }
+  display: inline-flex;
+  align-items: center;
+  .material-symbols-outlined {
+    vertical-align: middle;
   }
 `;
 const StLogoBtn = styled.span`

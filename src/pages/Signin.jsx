@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { AuthApi } from "../shared/Api";
 
@@ -37,7 +37,7 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
           email: email.value,
           password: password.value,
         });
-        console.log(res);
+        console.log("res:", res.email);
 
         const expirationDate = new Date();
         const setCookie = `token ${res.token}`;

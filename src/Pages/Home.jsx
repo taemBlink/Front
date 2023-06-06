@@ -18,49 +18,230 @@ function Home() {
               ></Input>
               <Searchbtn type="button" className="btn-srch"></Searchbtn>
             </Section>
-            <div className="home-list">
-              <div className="topic-list best">
-                <h2>
-                  <i className="ico">
-                    <img
-                      src="https://d2u3dcdbebyaiu.cloudfront.net/img/web/ico-best.png"
-                      alt="icon"
-                      width="32"
-                      height="32"
+            <TopicSection>
+              <div className="home-list">
+                <div className="topic-list best">
+                  <TopicH2>
+                    <TopicIcon>
+                      <img
+                        src="https://d2u3dcdbebyaiu.cloudfront.net/img/web/ico-best.png"
+                        alt="icon"
+                        width="32"
+                        height="32"
+                      />
+                      <span>토픽 베스트</span>
+                    </TopicIcon>
+                  </TopicH2>
+                </div>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <link
+                      rel="stylesheet"
+                      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0"
                     />
-                    토픽 베스트
-                  </i>
-                </h2>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
+                <Display className="article">
+                  <Display>
+                    <Topic>암호화폐</Topic>
+                    <a style={{ marginLeft: "10px", fontWeight: "bold" }}>
+                      {" "}
+                      엄마가 사위 구한대!!!!!
+                    </a>
+                  </Display>
+                  <RightContent>
+                    <Like>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        thumb_up
+                      </span>
+                      <span style={{ fontSize: "15px" }}>17</span>
+                    </Like>
+                    <Comment>
+                      <span
+                        class="material-symbols-outlined"
+                        style={{ fontSize: "15px" }}
+                      >
+                        mode_comment
+                      </span>
+                      <span style={{ fontSize: "15px" }}>200</span>
+                    </Comment>
+                  </RightContent>
+                </Display>
               </div>
-              <Display className="article">
-                <Display>
-                  <Topic>암호화폐</Topic>&nbsp; 엄마가 사위 구한대!!!!!
-                </Display>
-                <RightContent>
-                  <Like>
-                    <i className="blind"></i>&nbsp;&nbsp;17
-                  </Like>
-                  &nbsp;&nbsp;
-                  <Comment>
-                    <i className="blind"></i>&nbsp;&nbsp;211
-                  </Comment>
-                </RightContent>
-              </Display>
-              <Display className="article">
-                <Display>
-                  <Topic>암호화폐</Topic>&nbsp; 엄마가 사위 구한대!!!!!
-                </Display>
-                <RightContent>
-                  <Like>
-                    <i className="blind"></i>&nbsp;&nbsp;17
-                  </Like>
-                  &nbsp;&nbsp;
-                  <Comment>
-                    <i className="blind"></i>&nbsp;&nbsp;211
-                  </Comment>
-                </RightContent>
-              </Display>
-            </div>
+            </TopicSection>
           </Main>
         </Wrapped>
       </Container>
@@ -68,35 +249,32 @@ function Home() {
   );
 }
 export default Home;
-
 const Container = styled.div`
   display: block;
 `;
-
 const Wrapped = styled.div`
   flex-direction: row;
   border-top: none;
   /* padding: 40px 20px 0; */
   margin-left: 130px;
 `;
-
 const Main = styled.div`
   width: 736px;
   min-height: 800px;
 `;
-
-const Section = styled.div`
-  /* position: relative;
-  display: block; */
-  background: rgba(0, 0, 0, 0.05);
+const Section = styled.section`
+  width: 736px;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0);
   margin: 10px;
   padding: 5px;
 `;
-
 const Input = styled.input`
+  flex: 1;
   display: block;
-  width: 600px;
-  height: 50px;
+  width: 700px;
+  height: 60px;
   padding: 0 10px 0 62px;
   border: 2px solid #222;
   border-radius: 30px;
@@ -105,14 +283,10 @@ const Input = styled.input`
   -webkit-rtl-ordering: logical;
   cursor: text;
   background-color: field;
-  /* vertical-align: top; */
 `;
-
 const Searchbtn = styled.button`
   position: absolute;
-  top: 27.5%;
-  left: 11%;
-  transform: translate(-50%, -50%);
+  margin-left: 25px;
   display: block;
   width: 24px;
   height: 24px;
@@ -125,38 +299,45 @@ const Searchbtn = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
-
+const TopicSection = styled.div`
+  width: 736px;
+`;
+const TopicH2 = styled.h2`
+  position: relative;
+  border-bottom: 2px solid #eee;
+  font-weight: bold;
+`;
+const TopicIcon = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
 const Topic = styled.div`
+  color: #94969b;
   display: block;
   height: 20px;
   width: 50px;
-
   border: 1px solid #eee;
   /* vertical-align: middle; */
   text-align: center;
   font-size: 12px;
 `;
-
 const Display = styled.div`
   display: flex;
+  margin-top: 5px;
 `;
-
-const Like = styled.button`
-  background: url(https://static.teamblind.com/img/www_kr/sp-kr.png) no-repeat;
-  background-size: 600px 900px;
-  background-position: -62px -600px;
-  border: 0;
-  background-color: transparent;
+const Like = styled.a`
+  color: #94969b;
+  margin: 0 0 0 11px;
+  display: inline-flex;
+  align-items: center;
 `;
-
-const Comment = styled.button`
-  background: url(https://static.teamblind.com/img/www_kr/sp-kr.png) no-repeat;
-  background-size: 600px 900px;
-  background-position: -36px -600px;
-  border: 0;
-  background-color: transparent;
+const Comment = styled.a`
+  color: #94969b;
+  margin: 0 0 0 11px;
+  display: inline-flex;
+  align-items: center;
 `;
-
 const RightContent = styled.div`
-  margin-left: 300px;
+  margin-left: auto;
+  justify-content: space-between;
 `;

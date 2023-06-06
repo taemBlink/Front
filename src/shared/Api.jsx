@@ -26,14 +26,15 @@ export const AuthApi = {
   getdetail: (job_id) => api.get(`/job/${job_id}`),
   getUserData: async (token) => {
     try {
-      const response = await axios.get("/login", {
+      const response = await axios.post("/login", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          authorization: `token ${token}`,
         },
       });
       console.log("userdata:", response.data);
-      // return response.data;
+      return response.data;
     } catch (error) {
+      console.log(error);
       throw new Error("사용자 정보를 가져오는 중 오류가 발생했습니다.");
     }
   },
