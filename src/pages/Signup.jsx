@@ -43,12 +43,12 @@ function Signup() {
     err: null,
   });
 
-  const [companyName, setCompanyName] = useState({
+  const [company, setcompany] = useState({
     value: "",
     err: null,
   });
 
-  // const [companyName, setCompanyName] = useState({
+  // const [company, setcompany] = useState({
   //   value: "",
   //   err: null,
   // });
@@ -88,11 +88,11 @@ function Signup() {
     }));
   };
 
-  const onCompanyNameChangeHandler = (event) => {
-    const inputCompanyName = event.target.value;
-    setCompanyName((prevCompanyName) => ({
-      ...prevCompanyName,
-      value: inputCompanyName,
+  const oncompanyChangeHandler = (event) => {
+    const inputcompany = event.target.value;
+    setcompany((prevcompany) => ({
+      ...prevcompany,
+      value: inputcompany,
     }));
   };
 
@@ -162,7 +162,7 @@ function Signup() {
           payload.user_type = "일반회원";
         } else if (userType === "hr") {
           payload.user_type = "인사담당자";
-          payload.companyName = companyName.value;
+          payload.company = company.value;
         }
 
         const res = await AuthApi.signup(payload);
@@ -203,13 +203,13 @@ function Signup() {
           <label>
             회사명 :
             <StAlertBox>
-              {/* {companyName.err ? alertMessage.nickErr : null} */}
+              {/* {company.err ? alertMessage.nickErr : null} */}
             </StAlertBox>
           </label>
           <input
             type="text"
-            placeholder="My Company Name"
-            onChange={onCompanyNameChangeHandler}
+            placeholder="My company"
+            onChange={oncompanyChangeHandler}
           />
         </>
       )}

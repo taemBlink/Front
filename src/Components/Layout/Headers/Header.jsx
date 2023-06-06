@@ -1,25 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Signin from "../../../Pages/Signin";
 import { createPortal } from "react-dom";
+import { AuthApi } from "../../../shared/Api";
+
 function Header() {
   const [showModal, setShowModal] = useState(false);
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [userType, setUserType] = useState("");
+  // const [token, setToken] = useState(""); // 토큰 상태 추가
+
   const handleLoginClick = () => {
     setShowModal(true);
   };
+
   const handleLogoutClick = () => {
-    setIsLoggedin(false); // 상태 업데이트
+    setIsLoggedin(false);
+    localStorage.removeItem("token"); // 로그아웃 시 로컬 스토리지의 토큰 제거
   };
+
   const closeModal = () => {
     setShowModal(false);
   };
-  const handleLoginSuccess = () => {
-    setIsLoggedin(true); // 상태 업데이트
-    closeModal(); // 로그인 성공 후 모달 닫기
+
+  const handleLoginSuccess = (token) => {
+    setIsLoggedin(true);
+    localStorage.setItem("token", token); // 로그인 성공 시 토큰을 로컬 스토리지에 저장
+    closeModal();
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // 로컬 스토리지에서 토큰 가져오기
+
+    if (token) {
+      // 토큰이 존재하면 로그인 상태로 설정
+      setIsLoggedin(true);
+    }
+
+    // 로그인 상태와 토큰이 모두 있는 경우에만 사용자 데이터 호출
+    if (isLoggedin && token) {
+      const fetchUserData = async () => {
+        try {
+          const res = await AuthApi.getUserData(token);
+          setUserType(res.userType);
+        } catch (error) {
+          console.error(
+            "사용자 정보를 가져오는 중 오류가 발생했습니다.",
+            error
+          );
+        }
+      };
+      fetchUserData();
+    }
+  }, [isLoggedin]);
+
   return (
     <StHeader>
       <StSpaceDiv>
@@ -39,7 +74,7 @@ function Header() {
       <div
         style={{ display: "flex", marginLeft: "auto", alignItems: "center" }}
       >
-        <StJoinTeamBtn>팀블링크 채용</StJoinTeamBtn>
+        <StJoinTeamBtn>팀블링크 채용</StJoinTeamBtn>&nbsp;
       </div>
       <div style={{ display: "flex", alignItems: "center" }}>
         <Link to={"/posting"}>
@@ -49,7 +84,9 @@ function Header() {
         </Link>
         {isLoggedin ? (
           <>
-            <StBtnPosting>마이페이지</StBtnPosting>
+            <Link to={"/mypage"}>
+              <StBtnPosting>마이페이지</StBtnPosting>
+            </Link>
             <StBtnSignIn onClick={handleLogoutClick}>로그아웃</StBtnSignIn>
           </>
         ) : (
@@ -92,8 +129,8 @@ const StSpaceDiv = styled.div`
 `;
 const StBtnPosting = styled.button`
   margin-right: 8px;
-  background-color: #DA3238;
-  border-color: #DA3238;
+  background-color: #da3238;
+  border-color: #da3238;
   color: white;
   font-size: 11px;
   font-weight: bold;
@@ -110,7 +147,7 @@ const StBtnSignIn = styled(StBtnPosting)`
   margin-right: 8px;
   background-color: white;
   color: #222;
-  border: 2px solid #D4D4D4;
+  border: 2px solid #d4d4d4;
 `;
 const StMainBtn = styled.span`
   background-color: white;
@@ -163,9 +200,9 @@ const StEm = styled.em`
   font-size: 12px;
   font-weight: 600;
   line-height: 1;
-  color: #DA3238;
+  color: #da3238;
   background-color: white;
-  border: 1px solid #DA3238;
+  border: 1px solid #da3238;
   border-radius: 2px;
   transform: none;
 `;

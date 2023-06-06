@@ -79,6 +79,8 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
     };
   }, []);
   const kakaoLoginButtonImgPath = "/kakao_login_medium_narrow.png";
+
+  // handleLoginSuccess(res.token);
   return (
     <StContiner
       ref={modalRef}
@@ -117,22 +119,6 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
             <img src={kakaoLoginButtonImgPath} />{" "}
           </a>
         </div>
-        {/* <KakaoLogin
-          onClick={() => loginWithKakao()}
-          token={kakaoClientId}
-          onSuccess={kakaoOnSuccess}
-          onFail={kakaoOnFailure}
-          render={({ onClick }) => (
-            <img
-              src={kakaoLoginButtonImgPath}
-              alt="Kakao Login Button"
-              onClick={onClick}
-            />
-          )}
-        /> */}
-        {/* <StBtn backgroundcolor="#82c8a0" type="button" onClick={closeModal}>
-          닫기
-        </StBtn> */}
       </div>
     </StContiner>
   );

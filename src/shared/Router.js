@@ -22,13 +22,11 @@ const Router = () => {
         <Route path="/job" element={<PostList />} />
         <Route path="posting" element={<Posting />} />
         {/* <Route path="/job/:job_id" element={<PostList />} /> */}
-        <Route path="/detail/:job_id" element={<Detailpage />} />
-
+        <Route path="/job/:job_id" element={<Detailpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Signin />} />
         <Route path="/mypage/:user_id" element={<Mypage />} />
         <Route path="/oauth" element={<Signin />} />
-        {/* <Route path="/postlist" element={<PostList />} /> */}
       </Routes>
     </BrowserRouter>
   );

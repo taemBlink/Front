@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Layout from "../Components/Layout/Layout";
 import { AuthApi } from "../shared/Api";
+import Navibar from "../Components/Layout/Navigationbar/Navibar";
+import moment from "moment";
 
 function PostList() {
   const [postList, setPostList] = useState([]);
@@ -31,13 +32,22 @@ function PostList() {
     fetchPostList();
   }, []);
 
-  const handlePostClick = (postId) => {
-    navigate(`/detail/${postId}`);
+  const handlePostClick = (job_id) => {
+    navigate(`/job/${job_id}`);
   };
-  console.log("목록:", postList);
+  // console.log("목록:", postList);
+  const daysRemaining = (endDate) => {
+    const today = moment().startOf("day");
+    const end = moment(endDate, "YYYY-MM-DD").startOf("day");
+    const duration = moment.duration(end.diff(today));
+    const days = duration.asDays();
+    return Math.ceil(days);
+  };
+
   return (
     <Layout>
-      <Container>
+      <Navibar />
+      <GridDiv>
         {isLoading ? (
           <p>Loading...</p>
         ) : (
@@ -46,55 +56,81 @@ function PostList() {
               <Card key={post.job_id}>
                 <CardContent>
                   {post.end_date ? (
-                    <p>{post.end_date}</p> //모집기한
+                    <p>
+                      {daysRemaining(post.end_date) > 0
+                        ? `D- ${daysRemaining(post.end_date)}`
+                        : "오늘 마감"}
+                    </p>
                   ) : (
-                    <p>{post.isChecked ? "상시채용" : "기한 존재"}</p> //상시채용 여부, 마감일 표시
+                    <p>상시채용</p>
                   )}
                   <h2 onClick={() => handlePostClick(post.job_id)}>
-                    제목: {post.title}
+                    {post.title}
                   </h2>
                   <p>기업명: {post.company}</p>
                   <p>직군: {post.keywords}</p>
                   <p>주소: {post.address}</p>
-                  <StImgBox imageUrl={post.imageURL}></StImgBox>
                 </CardContent>
+                <StImgBox imageUrl={post.imageURL}></StImgBox>
               </Card>
             ))}
           </>
         )}
-      </Container>
+      </GridDiv>
     </Layout>
   );
 }
 
 export default PostList;
 
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: 100vh;
+const GridDiv = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  grid-gap: 0.5px;
+  height: 200vh;
+  padding-left: 150px;
+  padding-right: 150px;
 `;
 
 const Card = styled.div`
-  flex-basis: 50%;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+
   padding: 20px;
-  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 `;
 
 const CardContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  p {
+    margin: 5px 0;
+  }
+
+  h2 {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      color: #4285f4;
+    }
+  }
 `;
 
 const StImgBox = styled.div`
+  width: 100%;
+  height: 100%;
   background-image: url(${(props) => props.imageUrl});
   background-size: cover;
   background-position: center;
-  width: 100%;
-  height: 80%;
+  margin-bottom: 10px;
 `;

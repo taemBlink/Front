@@ -9,11 +9,6 @@ export const api = axios.create({
   withCredentials: true,
 });
 
-// export const AuthApi = {
-//   // 회원정보 관련
-//   signup: (payload) => api.post("/signup", payload),
-//   signin: (payload) => api.post("/login", payload),
-// };
 export const AuthApi = {
   signup: async (payload) => {
     const url = "/signup";
@@ -24,23 +19,22 @@ export const AuthApi = {
     const response = await api.post("/login", payload);
     return response.data;
   },
-  imgUoload: (payload) => api.post("/job/upload", payload),
+  imgUpload: (payload) => api.post("/job/upload", payload),
   write: (payload, config) => api.post("/job/write", payload, { ...config }),
   findsido: () => api.get("/findsido"),
   getpost: () => api.get("/job"),
   getdetail: (job_id) => api.get(`/job/${job_id}`),
-};
-
-export const getUserData = async (token) => {
-  try {
-    const response = await axios.get("/api/user", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    throw new Error("사용자 정보를 가져오는 중 오류가 발생했습니다.");
-  }
+  getUserData: async (token) => {
+    try {
+      const response = await axios.get("/login", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("userdata:", response.data);
+      // return response.data;
+    } catch (error) {
+      throw new Error("사용자 정보를 가져오는 중 오류가 발생했습니다.");
+    }
+  },
 };

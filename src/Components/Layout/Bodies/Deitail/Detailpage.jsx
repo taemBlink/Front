@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { AuthApi } from "../../../../shared/Api";
+import Layout from "../../Layout";
+import styled from "styled-components";
 
 function Detailpage() {
   const { job_id } = useParams();
@@ -28,23 +30,30 @@ function Detailpage() {
   }, [0]);
 
   return (
-    <div className="detail-container">
-      <div className="content">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : post ? (
-          <div>
-            <h2>{post.title}</h2>
+    <Layout>
+      <DetailContainer>
+        <div className="content">
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : post ? (
+            <div>
+              <h2>{post.title}</h2>
 
-            {processedHtml}
-          </div>
-        ) : (
-          <p>Post not found</p>
-        )}
-      </div>
-      <Sidebar />
-    </div>
+              {processedHtml}
+            </div>
+          ) : (
+            <p>Post not found</p>
+          )}
+        </div>
+        <Sidebar />
+      </DetailContainer>
+    </Layout>
   );
 }
 
 export default Detailpage;
+
+const DetailContainer = styled.div`
+  flex-direction: row;
+  margin-left: 150px;
+`;
