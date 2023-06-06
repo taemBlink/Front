@@ -37,7 +37,6 @@ function Signin({ handleLoginSuccess, setIsLoggedin, closeModal }) {
           email: email.value,
           password: password.value,
         });
-        console.log("res:", res.email);
 
         const expirationDate = new Date();
         const setCookie = `token ${res.token}`;

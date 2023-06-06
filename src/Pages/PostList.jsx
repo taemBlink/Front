@@ -56,11 +56,11 @@ function PostList() {
               <Card key={post.job_id}>
                 <CardContent>
                   {post.end_date ? (
-                    <p>
+                    <Dday>
                       {daysRemaining(post.end_date) > 0
                         ? `D- ${daysRemaining(post.end_date)}`
                         : "오늘 마감"}
-                    </p>
+                    </Dday>
                   ) : (
                     <p>상시채용</p>
                   )}
@@ -133,4 +133,13 @@ const StImgBox = styled.div`
   background-size: cover;
   background-position: center;
   margin-bottom: 10px;
+`;
+
+const Dday = styled.div`
+  border-color: #66cdaa;
+  border-radius: 10px;
+  border: solid 0.5px;
+  font-size: 9px;
+  color: #66cdaa;
+  padding: 2px;
 `;

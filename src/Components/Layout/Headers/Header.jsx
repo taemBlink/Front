@@ -10,6 +10,7 @@ function Header() {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [userType, setUserType] = useState("");
   // const [token, setToken] = useState(""); // 토큰 상태 추가
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleLoginClick = () => {
     setShowModal(true);
@@ -17,6 +18,7 @@ function Header() {
 
   const handleLogoutClick = () => {
     setIsLoggedin(false);
+    removeCookie("authorization");
   };
 
   const closeModal = () => {
@@ -27,8 +29,6 @@ function Header() {
     setIsLoggedin(true);
     closeModal();
   };
-
-  const [cookies] = useCookies();
 
   useEffect(() => {
     if (cookies.authorization) {
