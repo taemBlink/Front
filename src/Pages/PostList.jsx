@@ -62,13 +62,13 @@ function PostList() {
                         : "오늘 마감"}
                     </Dday>
                   ) : (
-                    <p>상시채용</p>
+                    <Dday>상시채용</Dday>
                   )}
                   <h2 onClick={() => handlePostClick(post.job_id)}>
                     {post.title}
                   </h2>
                   <p>기업명: {post.company}</p>
-                  <p>직군: {post.keywords}</p>
+                  {/* <p>직군: {post.keywords}</p> */}
                   <p>주소: {post.address}</p>
                 </CardContent>
                 <StImgBox imageUrl={post.imageURL}></StImgBox>
@@ -137,7 +137,7 @@ const StImgBox = styled.div`
 
 const Dday = styled.div`
   border-color: #66cdaa;
-  border-radius: 10px;
+  border-radius: 9px;
   border: solid 0.5px;
   font-size: 9px;
   color: #66cdaa;
