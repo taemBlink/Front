@@ -25,7 +25,7 @@ const Router = () => {
         <Route path="/job/:job_id" element={<Detailpage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Signin />} />
-        <Route path="/mypage/:user_id" element={<Mypage />} />
+        {/* <Route path="/mypage/:user_id" element={<Mypage />} /> */}
         <Route path="/oauth" element={<Signin />} />
       </Routes>
     </BrowserRouter>

@@ -77,9 +77,9 @@ function Header() {
         </Link>
         {isLoggedin ? (
           <>
-            <Link to={"/mypage"}>
+            {/* <Link to={"/mypage"}>
               <StBtnPosting>마이페이지</StBtnPosting>
-            </Link>
+            </Link> */}
             <StBtnSignIn onClick={handleLogoutClick}>로그아웃</StBtnSignIn>
           </>
         ) : (
