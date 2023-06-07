@@ -36,7 +36,7 @@ function Header() {
     } else {
       setIsLoggedin(false);
     }
-  }, [isLoggedin]);
+  }, [cookies]);
 
   return (
     <StHeader>

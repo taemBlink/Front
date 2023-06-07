@@ -61,13 +61,13 @@ function Detailpage() {
               <StAdressBox>{post.address}</StAdressBox>
             </StCompanyInfoBox>
             <StContentData>{processedHtml}</StContentData>
-            <StSubmitBtn>지원하기</StSubmitBtn>
           </StContentBox>
         ) : (
           <p>Post not found</p>
         )}
         <Sidebar />
       </DetailContainer>
+      <StSubmitBtn>지원하기</StSubmitBtn>
     </Layout>
   );
 }
