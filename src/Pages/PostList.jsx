@@ -7,43 +7,36 @@ import Navibar from "../Components/Layout/Navigationbar/Navibar";
 import moment from "moment";
 
 function PostList() {
+  const [getPostList, setGetPostList] = useState([]);
   const [postList, setPostList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  const keywords = new URLSearchParams(location.search).get("keywords");
+  // const keywords = new URLSearchParams(location.search).get("keywords");
+  const [keywords, setKeywords] = useState("");
 
-  useEffect(() => {
-    const fetchPostList = async () => {
-      try {
-        const response = await AuthApi.getpost();
-        console.log(response);
-        setPostList(
-          response.data.jobs.map((post) => ({
-            ...post,
-            companyName: post.companyName,
-          }))
-        );
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching post list:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchPostList();
-  }, []);
-
-  useEffect(() => {
-    const filteredList = postList.filter((post) =>
-      keywords ? post.keywords.includes(keywords) : true
-    );
-    setPostList(filteredList);
-  }, [keywords]);
-
-  const handlePostClick = (job_id) => {
-    navigate(`/job/${job_id}`);
+  const fetchPostList = async () => {
+    try {
+      const response = await AuthApi.getpost();
+      console.log(response);
+      setGetPostList(response.data.jobs);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching post list:", error);
+      setIsLoading(false);
+    }
   };
+
+  useEffect( () => {
+    fetchPostList();
+    const filteredList = getPostList.filter((item) => {
+      if (keywords === "") {
+        return true; // 모든 데이터를 가져옴
+      }
+      return item.keywords === keywords;
+    });
+    setPostList(filteredList);
+  }, [keywords, getPostList]);
 
   const daysRemaining = (endDate) => {
     const today = moment().startOf("day");
@@ -53,13 +46,13 @@ function PostList() {
     return Math.ceil(days);
   };
 
+  const handlePostClick = (job_id) => {
+    navigate(`/job/${job_id}`);
+  }
+
   return (
     <Layout>
-      <Navibar
-        onFilterByKeyword={(keywords) =>
-          navigate(`?keywords=${encodeURIComponent(keywords)}`)
-        }
-      />
+      <Navibar setKeywords={setKeywords} />
       <GridDiv>
         {isLoading ? (
           <p>Loading...</p>

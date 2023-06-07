@@ -1,20 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-function Navibar({ onFilterByKeyword }) {
-  const handleNavClick = (keyword) => {
-    onFilterByKeyword(keyword);
-  };
-
+function Navibar({ setKeywords }) {
   return (
     <NavContainer>
-      <NavLink onClick={() => handleNavClick("")}>채용 전체</NavLink>
-      <NavLink onClick={() => handleNavClick("엔지니어링")}>엔지니어링</NavLink>
-      <NavLink onClick={() => handleNavClick("교육")}>교육</NavLink>
-      <NavLink onClick={() => handleNavClick("개발")}>개발</NavLink>
-      <NavLink onClick={() => handleNavClick("HR·경영지원")}>
-        HR·경영지원
-      </NavLink>
+      <NavLink onClick={() => setKeywords("")}>채용 전체</NavLink>
+      <NavLink onClick={() => setKeywords("엔지니어링")}>엔지니어링</NavLink>
+      <NavLink onClick={() => setKeywords("교육")}>교육</NavLink>
+      <NavLink onClick={() => setKeywords("개발")}>개발</NavLink>
+      <NavLink onClick={() => setKeywords("HR·경영지원")}>HR·경영지원</NavLink>
     </NavContainer>
   );
 }
