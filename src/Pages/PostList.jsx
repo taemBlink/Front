@@ -26,17 +26,21 @@ function PostList() {
       setIsLoading(false);
     }
   };
-
-  useEffect( () => {
-    fetchPostList();
-    const filteredList = getPostList.filter((item) => {
-      if (keywords === "") {
-        return true; // 모든 데이터를 가져옴
-      }
-      return item.keywords === keywords;
-    });
-    setPostList(filteredList);
-  }, [keywords, getPostList]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchPostList();
+      const filteredList = getPostList.filter((item) => {
+        if (keywords === "") {
+          return true; // 모든 데이터를 가져옴
+        }
+        return item.keywords === keywords;
+      });
+      setPostList(filteredList);
+    };
+  
+    fetchData();
+  }, [keywords]);
 
   const daysRemaining = (endDate) => {
     const today = moment().startOf("day");
